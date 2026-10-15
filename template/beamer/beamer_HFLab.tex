@@ -1,0 +1,82 @@
+\documentclass{beamer}
+
+\usepackage{graphicx}
+\usepackage{pgf}
+
+\usepackage[whole]{bxcjkjatype}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\renewcommand\familydefault{\sfdefault}
+
+\mode<presentation>{
+    \usetheme[secheader]{HFLab}
+    \setbeamercovered{transparent}
+}
+
+\title[ShortTitle]{Title}
+\subtitle[ShortSubtitle]{Subtitle}
+
+\author[ShortAuthor]{Author}
+
+\institute{Institute}
+
+\date{Date}
+
+\beamertemplatenavigationsymbolsempty
+
+\newif\iflattersubsect
+
+\AtBeginSection[]{
+    \begin{frame}<beamer>
+        \frametitle{Outline}
+        \tableofcontents[
+            currentsection,
+            currentsubsection,
+            hideothersubsections,
+            sectionstyle=show/shaded,
+        ]
+    \end{frame}
+    \addtocounter{framenumber}{-1}
+}
+
+\AtBeginSubsection[]{
+    \iflattersubsect
+    \begin{frame}<beamer>
+        \frametitle{Outline}
+        \tableofcontents[
+            currentsection,
+            currentsubsection,
+            subsectionstyle=show/shaded,
+        ]
+    \end{frame}
+    \addtocounter{framenumber}{-1}
+    \fi
+    \lattersubsecttrue
+}
+
+\begin{document}
+
+\begin{frame}[plain]
+    \titleHeaderLogo
+    \titlepage
+\end{frame}
+
+\begin{frame}{Contents}
+    \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{Section Title}
+
+\subsection{Subsection Title}
+
+\begin{frame}{Frame Title}
+\begin{itemize}
+    \item Equation
+    \begin{align}
+        x+y=z
+    \end{align}
+    \item 日本語
+\end{itemize}
+\end{frame}
+
+\end{document}

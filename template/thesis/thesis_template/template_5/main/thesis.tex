@@ -1,0 +1,83 @@
+\documentclass[platex,ja=standard,12pt,a4paper,twoside,onecolumn,fleqn,dvipdfmx,english]{bxjsbook}
+% \setpagelayout*{top=10mm,bottom=10mm,left=10mm,right=10mm,headsep=4mm}
+
+\usepackage{preamble}
+
+\begin{document}
+
+\thispagestyle{empty}
+\begin{center}
+{\LARGE{\textbf{Doctoral Dissertation}}}\\
+\medskip
+{\LARGE{博士論文}}\\
+\bigskip
+\bigskip
+\bigskip
+{\LARGE{\textbf{English Title}}}\\
+\bigskip
+{\LARGE{（日本語 題目）}}\\
+\bigskip
+{\Large{by}}\\
+\bigskip
+{\LARGE{{00-000000}\ \ \textbf{Name}}}\\
+\bigskip
+\bigskip
+\bigskip
+{\large{Dissertation Submitted to}}\\
+\medskip
+{\large{\textbf{Department of Electrical Engineering and Information Systems}}}\\
+\medskip
+{\large{for the Degree of}}\\
+\medskip
+{\large{\textbf{Doctor of Philosophy}}}\\
+\medskip
+{\large{at}}\\
+\medskip
+{\large{\textbf{The University of Tokyo}}}\\
+\bigskip
+\bigskip
+\bigskip
+{\large{\textbf{Month yyyy}}}\\
+\bigskip
+\bigskip
+\bigskip
+{\large{Supervisor:}}\\
+\medskip
+{\large{\textbf{Professor\ \ Hiroshi Fujimoto}}}
+\end{center}
+
+\frontmatter
+
+\input{../chapter/abstract}
+\input{../chapter/acknowledgment}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+
+\input{../chapter/introduction}
+
+\part{Theory}
+
+\input{../chapter/theory}
+
+\part{Applications}
+
+\input{../chapter/application}
+
+\input{../chapter/conclusion}
+
+\backmatter
+
+\input{../chapter/appendix}
+
+\bibliographystyle{IEEEtran.bst}
+\bibliography{ref.bib}
+
+\input{../chapter/publication}
+
+\printindex
+
+\end{document}

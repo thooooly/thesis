@@ -1,0 +1,61 @@
+\mode<presentation>
+
+\newif\ifbeamer@secheader
+\beamer@secheaderfalse
+
+\DeclareOptionBeamer{secheader}{\beamer@secheadertrue}
+\DeclareOptionBeamer{hideothersubsections}{\PassOptionsToPackage{hideothersubsections=#1}{beamerouterthemesidebar}}
+\DeclareOptionBeamer{hideallsubsections}{\PassOptionsToPackage{hideallsubsections=#1}{beamerouterthemesidebar}}
+
+\DeclareOptionBeamer{width}{\PassOptionsToPackage{width=#1}{beamerouterthemesidebar}}
+\DeclareOptionBeamer{left}{\PassOptionsToPackage{left}{beamerouterthemesidebar}}
+\DeclareOptionBeamer{right}{\PassOptionsToPackage{right}{beamerouterthemesidebar}}
+\ProcessOptionsBeamer
+
+\usecolortheme{HFLab}
+\useinnertheme{HFLab}
+\useoutertheme{HFLab}
+
+\def\red#1{\textbf{\textcolor{red}{#1}}}
+
+\def\beginbackup{
+    \edef\mainend{\theframenumber}
+    \newcounter{framenumbervorappendix}
+    \setcounter{framenumbervorappendix}{\value{framenumber}}
+}
+
+\def\backupend{
+   \addtocounter{framenumbervorappendix}{-\value{framenumber}}
+   \addtocounter{framenumber}{\value{framenumbervorappendix}}
+}
+
+\def\titleHeaderLogo{
+    \parbox[t][10mm]{50mm}{
+        \includegraphics[height=10mm]{logo/logo_left.pdf}
+    }
+    \hfill
+    \parbox[t]{50mm}{
+        \hfill
+        \includegraphics[height=10mm]{logo/logo_right.pdf}
+    }
+    \hspace{1.5mm}
+}
+
+\usesubitemizeitemtemplate{
+    \tiny\raise1.5pt\hbox{\color{beamerstructure}$\blacktriangleright$}
+}
+
+\usesubsubitemizeitemtemplate{
+    \tiny\raise1.5pt\hbox{\color{beamerstructure}$\bigstar$}
+}
+
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+\ifbeamer@secheader\else\setbeamertemplate{headline}[default]\fi
+
+\mode
+<all>
+
+\makeatletter
+\def\HyPsd@CatcodeWarning#1{}
+\makeatother

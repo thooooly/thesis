@@ -1,0 +1,108 @@
+\documentclass[10pt,a4paper,oneside,twocolumn,fleqn,dvipdfmx]{jsarticle}
+
+% margin setting
+\usepackage{geometry}
+\geometry{left=16mm,right=16mm,top=20mm,bottom=20mm,headsep=4mm,footskip=8mm}
+
+% hyperref & color & graphicx setting
+\usepackage{hyperref}
+\hypersetup{
+    setpagesize=false,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+}
+\setcounter{tocdepth}{4}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\graphicspath{{./fig/}}
+
+% usepackage setting
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{comment}
+\usepackage{siunitx}
+
+% font setting
+\usepackage[varg]{txfonts}
+\usepackage{bm}
+
+% reference setting
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\newcommand{\fig}[1]{Fig.\ \ref{fig:#1}}
+\newcommand{\tab}[1]{Table\ \ref{tab:#1}}
+
+% maketitle setting
+\makeatletter
+\newcommand{\documenttitle}[1]{\def\@documenttitle{#1}}
+\newcommand{\authorname}[1]{\def\@authorname{#1}}
+\newcommand{\affiliation}[1]{\def\@affiliation{#1}}
+\newcommand{\publishdate}[1]{\def\@publishdate{#1}}
+\title{\LARGE{\@documenttitle}}
+\author{\Large{\@authorname}\\\@affiliation}
+\date{}
+\makeatother
+
+% fancyhdr setting
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\makeatletter
+\lhead{\@publishdate}
+\rhead{\@authorname}
+\cfoot{\thepage{\ }/{\ }\pageref{LastPage}}
+\makeatother
+\renewcommand{\headrulewidth}{0pt}
+
+% document information
+\documenttitle{発表タイトル}
+\authorname{堀藤 太郎}
+\affiliation{東京大学 藤本・清水・藤田研究室}
+\publishdate{yyyy/mm/dd}
+
+% main
+\begin{document}
+
+\begin{abstract}
+    ここに概要を書く。
+\end{abstract}
+
+\maketitle
+\thispagestyle{fancy}
+
+\section{序論}
+ここに序論を書く。
+
+\section{結論}
+ここに結論を書く。
+
+% examples
+
+% figure example
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=1.0\linewidth]{figure_name.pdf}
+% \caption{Figure Name.}
+% \label{fig:fig_name}
+% \end{figure}
+
+% subfigure example
+
+% \begin{figure}[t]
+% \centering
+% \subfigure[Figure Name 1.]{\includegraphics[width=0.48\linewidth]{figure_name_1.pdf}\label{fig:fig_name_1}}
+% \subfigure[Figure Name 2.]{\includegraphics[width=0.48\linewidth]{figure_name_2.pdf}\label{fig:fig_name_2}}
+% \caption{Subfigure Name.}
+% \label{fig:subfigure_name}
+% \end{figure}
+
+% bibliography
+
+% \bibliographystyle{IEEEtran}
+% \bibliography{ref.bib}
+
+\end{document}

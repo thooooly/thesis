@@ -1,0 +1,55 @@
+\documentclass[english]{ieej-e-samcon}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{subfigure}
+\graphicspath{{./fig/}}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{siunitx}
+\usepackage{url}
+
+\usepackage[varg]{txfonts}
+\usepackage{bm}
+
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\newcommand{\fig}[1]{Fig.\ \ref{fig:#1}}
+\newcommand{\tab}[1]{Table\ \ref{tab:#1}}
+
+\YEAR{2018}
+\title[Short Title]{Title}
+\authorlist{
+    \authorentry[horifuji.taro@ae.k.u-tokyo.ac.jp]{Taro Horifuji}{s}{hflab}
+    \authorentry[fujimoto@k.u-tokyo.ac.jp]{Hiroshi Fujimoto}{S}{hflab}
+    \authorentry[hori@k.u-tokyo.ac.jp]{Yoichi Hori}{f}{hflab}
+    }
+
+\affiliate[hflab]{The University of Tokyo\\
+    5-1-5, Kashiwanoha, Kashiwa, Chiba, 227-8561 Japan\\
+    Phone: +81-4-7136-3881\\
+    Fax: +81-4-7136-3881
+    }
+
+\begin{document}
+
+\begin{abstract}
+The abstract goes here.
+\end{abstract}
+
+\begin{keyword}
+The keyword goes here.
+\end{keyword}
+
+\maketitle
+
+\section{Introduction}
+The introduction goes here.
+
+\bibliographystyle{IEEEtran}
+\bibliography{ref}
+
+\end{document}

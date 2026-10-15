@@ -1,0 +1,129 @@
+\newdimen\beamer@sidebarwidth
+\newdimen\beamer@headheight
+\newdimen\beamer@footheight
+\beamer@sidebarwidth=2.5\baselineskip
+\beamer@headheight=2.5\baselineskip
+\beamer@footheight=2.5\baselineskip
+\reset@font
+
+\def\beamer@lefttext{left}
+
+\DeclareOptionBeamer{hideothersubsections}[]{\beamer@nav@subsectionstyle{show/show/hide}}
+\DeclareOptionBeamer{hideallsubsections}[]{\beamer@nav@subsectionstyle{hide}}
+
+\DeclareOptionBeamer{width}{\beamer@sidebarwidth=#1}
+\DeclareOptionBeamer{height}{\beamer@headheight=#1}
+\DeclareOptionBeamer{high}{\beamer@footheight=#1}
+\DeclareOptionBeamer{left}{\def\beamer@sidebarside{left}}
+\DeclareOptionBeamer{right}{\def\beamer@sidebarside{right}}
+\ExecuteOptionsBeamer{left}
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+\ifdim \beamer@sidebarwidth>0pt
+    \setbeamersize{sidebar width \beamer@sidebarside=0.28\beamer@sidebarwidth}
+\fi
+
+\setbeamercolor*{author in head/foot}{parent=palette tertiary}
+\setbeamercolor*{title in head/foot}{parent=palette primary.bg}
+\setbeamercolor*{number in head/foot}{fg=white}
+\setbeamercolor*{box in head/foot}{fg=UTokyoGreen}
+
+\setbeamercolor*{section in head/foot}{parent=palette tertiary}
+\setbeamercolor*{subsection in head/foot}{parent=palette tertiary}
+
+\ifdim \beamer@headheight>0pt
+    \defbeamertemplate*{footline}{infolines theme}{
+        \leavevmode
+        \hbox{
+        \begin{beamercolorbox}[wd=0.8\paperwidth]
+        \empty
+        \end{beamercolorbox}
+        \begin{beamercolorbox}[wd=.2\paperwidth,ht=0ex,dp=0ex,right]{number in head/foot}
+        \parbox[b][8mm]{10mm}{
+            \begin{pgfpicture}{0mm}{0mm}{20mm}{10mm}\color{UTokyoGold}
+            \pgfrect[fill]{\pgfpoint{0mm}{0mm}}{\pgfpoint{10mm}{4mm}}
+            \color{white}
+            \pgfputat{\pgfxy(0.5,0.2)}{
+                \pgfbox[center,center]{
+                    \insertframenumber{}/\inserttotalframenumber
+                }
+            }
+            \end{pgfpicture}
+        }
+        \vskip2mm
+        \end{beamercolorbox}}
+    }
+
+    \setbeamercolor*{frametitle}{parent=section in head/foot,bg=UTokyoBlue}
+    \defbeamertemplate*{headline}{sidebar theme}{
+        \leavevmode
+        \hbox{
+        \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.75ex,dp=1.5ex,right]{section in head/foot}
+        \usebeamerfont{section in head/foot}\insertsectionhead\hspace*{2ex}
+        \end{beamercolorbox}
+        \begin{beamercolorbox}[wd=.004\paperwidth,ht=2.75ex,dp=1.5ex,right]\empty\hspace*{2ex}
+        \end{beamercolorbox}
+        \begin{beamercolorbox}[wd=.396\paperwidth,ht=2.75ex,dp=1.5ex,left]{subsection in  head/foot}
+        \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertsubsectionhead
+        \end{beamercolorbox}}
+        \vskip0pt
+        \begin{beamercolorbox}[wd=\paperwidth,ht=0.12\headheight]{headline}
+        \end{beamercolorbox}
+        \vskip0pt
+    }
+
+    \defbeamertemplate*{frametitle}{theme}{
+        \vspace{-0.133ex}
+        \leavevmode
+        \hbox{\hspace{-0.9mm}
+        \begin{beamercolorbox}[wd=124mm,ht=2.7ex,dp=1.1ex]{frametitle}
+        \usebeamerfont{frametitle}~\insertframetitle
+        \end{beamercolorbox}}
+        \vskip-10pt
+    }
+
+    \defbeamertemplate*{sidebar right}{theme}{
+        \vfill
+        \llap{\usebeamertemplate***{navigation symbols}\hskip1mm}
+        \vskip9.5mm
+    }
+
+    \defbeamertemplate*{sidebar left}{theme}{
+        \vfill\parbox[t]{300mm}{
+            \hspace{4mm}
+            \begin{pgfpicture}{0mm}{0mm}{350mm}{1mm}
+                \color{UTokyoGold}
+                \pgfrect[fill]{\pgfpoint{0mm}{0mm}}{\pgfpoint{124mm}{1pt}}
+            \end{pgfpicture}
+        }
+        \rlap{
+            \hspace{4mm}
+            \parbox[t][8mm]{110mm}{
+                \parbox[t][5mm]{30mm}{
+                    \vspace{1mm}
+                    \includegraphics[height=5mm]{logo/logo_foot.pdf}
+                }
+                \hspace{5mm}
+                \parbox[t][5mm]{75mm}{
+                    \vspace{2mm}
+                    \centering
+                    \scriptsize
+                    \insertshorttitle \\
+                    \tiny{
+                        \insertdate
+                        \hspace{2mm}
+                        \insertshortauthor
+                    }
+                }
+            }
+        }
+    }
+    \vskip2mm
+\fi
+
+\mode
+<all>
