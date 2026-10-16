@@ -1,0 +1,184 @@
+\documentclass[dvipdfmx,usejistfm]{ieej-tec2}
+
+% ============================================================
+% Preamble
+% ============================================================
+\usepackage{preamble}
+\usepackage{siunitx}
+\usepackage{tabularx}
+
+\graphicspath{{fig/}}
+\DeclareSIUnit{\degr}{deg}
+
+% ============================================================
+% Paper information
+% ============================================================
+% 論文番号（1頁目右上）
+\articlenumber{IIC-XX-XXX}
+
+% タイトル
+\jtitle{和文タイトル}
+\etitle{English Title}
+
+% 著者
+\authorlist{%
+  \authorentry{堀越太智*}{Taichi Horikoshi}{東京大学}%
+  \authorentry{}{}{}%
+}
+
+% 所属
+\affiliate[1]
+ {所属機関名}
+ {Affiliation in English}
+% \affiliate[2]
+%  {所属機関名2}
+%  {Affiliation 2 in English}
+
+% 必要に応じて所属表示位置を調整
+\breakaffiliate{1}
+% \breakaffiliate{2}
+
+\begin{document}
+
+% ============================================================
+% Keywords and abstract
+% ============================================================
+\begin{jkeyword}
+キーワード1,キーワード2,キーワード3
+\end{jkeyword}
+
+\begin{ekeyword}
+keyword 1, keyword 2, keyword 3
+\end{ekeyword}
+
+\begin{abstract}
+\ \ 英文アブストラクトを記述する。
+\end{abstract}
+
+\maketitle
+
+% ============================================================
+% Main text
+% ============================================================
+\section{序論}
+研究背景，従来研究，課題，本稿の目的および構成を記述する。
+
+% 引用例：\cite{ReferenceKey}
+% 複数引用例：\cite{ReferenceKey1,ReferenceKey2}
+
+\section{対象システム}
+対象とするシステム，実験装置，モデル化，パラメータなどを記述する。
+
+\subsection{実験装置の概要}
+実験装置の構成を記述する。
+
+% ------------------------------------------------------------
+% Figure template
+% ------------------------------------------------------------
+% \begin{figure}[tb]
+%   \centering
+%   \includegraphics[width=0.7\linewidth]{figure_name.pdf}
+%   \bicaption{和文キャプション}{English caption.}
+%   \label{fig:figure_label}
+% \end{figure}
+%
+% 本文中の参照例：図\ref{fig:figure_label}に示す。
+
+% ------------------------------------------------------------
+% Two-panel figure template
+% ------------------------------------------------------------
+% \begin{figure}[tb]
+%   \centering
+%   \begin{subcaptionblock}[t]{0.48\linewidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{figure_a.pdf}
+%     \bisubcaption{和文キャプションA}{English caption A}
+%   \end{subcaptionblock}
+%   \hfill
+%   \begin{subcaptionblock}[t]{0.48\linewidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{figure_b.pdf}
+%     \bisubcaption{和文キャプションB}{English caption B}
+%   \end{subcaptionblock}
+%   \bicaption{全体の和文キャプション}{Overall English caption.}
+%   \label{fig:two_panel_label}
+% \end{figure}
+
+\subsection{数理モデル}
+対象の数理モデルを記述する。
+
+% ------------------------------------------------------------
+% Equation templates
+% ------------------------------------------------------------
+\begin{equation}
+  y(s) = G(s)u(s)
+  \label{eq:example}
+\end{equation}
+
+% 本文中の参照例：式(\ref{eq:example})より，以下が得られる。
+
+% \begin{align}
+%   x_1 &= a+b, \\
+%   x_2 &= c+d
+%   \label{eq:align_example}
+% \end{align}
+
+% \begin{equation}
+%   A =
+%   \begin{pmatrix}
+%     a_{11} & a_{12} \\
+%     a_{21} & a_{22}
+%   \end{pmatrix}
+%   \label{eq:matrix_example}
+% \end{equation}
+
+% ------------------------------------------------------------
+% Table template
+% ------------------------------------------------------------
+% \begin{table}[tb]
+%   \centering
+%   \bicaption{和文表題}{English table caption.}
+%   \begin{tabularx}{\linewidth}{Xll}
+%     \hline
+%     Parameter & Value & Unit \\
+%     \hline
+%     Parameter 1 & $0.00$ & \si{unit} \\
+%     Parameter 2 & $0.00$ & \si{unit} \\
+%     \hline
+%   \end{tabularx}
+%   \label{tab:parameter_label}
+% \end{table}
+%
+% 本文中の参照例：表\ref{tab:parameter_label}に示す。
+
+\section{提案手法}
+提案手法の概要，理論，設計手順などを記述する。
+
+\subsection{手法の概要}
+提案手法の基本的な考え方を記述する。
+
+\subsection{設計方法}
+設計式やアルゴリズムを記述する。
+
+\section{検証}
+シミュレーションおよび実験による検証方法を記述する。
+
+\subsection{検証条件}
+シミュレーション条件，実験条件，評価指標などを記述する。
+
+\subsection{シミュレーション結果}
+シミュレーション結果と考察を記述する。
+
+\subsection{実験結果}
+実験結果と考察を記述する。
+
+\section{結論}
+本稿で得られた成果をまとめ，今後の課題を記述する。
+
+% ============================================================
+% Bibliography
+% ============================================================
+\bibliographystyle{IEEJtran}
+\bibliography{cite}
+
+\end{document}

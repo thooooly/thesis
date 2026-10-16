@@ -1,0 +1,20 @@
+# pLaTeX
+$latex = 'platex -kanji=utf8 -synctex=1 -interaction=nonstopmode -file-line-error %O %S';
+
+# BibTeX
+$bibtex = 'pbibtex -kanji=utf8 %O %B';
+
+# Index
+$makeindex = 'mendex %O -o %D %S';
+
+# DVI -> PDF
+$dvipdf = 'dvipdfmx %O -o %D %S';
+
+# pLaTeX -> DVI -> PDF
+$pdf_mode = 3;
+
+# Maximum compilation repetitions
+$max_repeat = 5;
+
+# Keep PDF generation stable
+$pvc_view_file_via_temporary = 0;
