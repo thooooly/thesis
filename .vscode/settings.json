@@ -1,0 +1,47 @@
+{
+    "latex-workshop.latex.tools": [
+        {
+            "name": "IEEJ-pLaTeX",
+            "command": "platex",
+            "args": [
+                "-kanji=utf8",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "IEEJ-dvipdfmx",
+            "command": "dvipdfmx",
+            "args": [
+                "-o",
+                "%DOCFILE%.pdf",
+                "%DOCFILE%.dvi"
+            ]
+        }
+    ],
+
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "IEEJ: pLaTeX x2 -> dvipdfmx",
+            "tools": [
+                "IEEJ-pLaTeX",
+                "IEEJ-pLaTeX",
+                "IEEJ-dvipdfmx"
+            ]
+        }
+    ],
+
+    "latex-workshop.latex.recipe.default": "first",
+    "latex-workshop.latex.autoBuild.run": "onSave",
+
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.outDir": "%DIR%",
+
+    "latex-workshop.synctex.afterBuild.enabled": true,
+
+    "files.autoSave": "off",
+
+    "explorer.confirmDelete": false
+}

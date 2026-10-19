@@ -1,0 +1,141 @@
+% ============================================================
+% Bibliography template for IEEJ paper
+% File name: cite.bib
+% Save this file as UTF-8.
+% ============================================================
+
+% ------------------------------------------------------------
+% Journal article
+% ------------------------------------------------------------
+@article{JournalArticleKey,
+  author  = {asdasd},
+  title   = {Title of the Journal Article},
+  journal = {Journal Name},
+  volume  = {00},
+  number  = {0},
+  pages   = {00--00},
+  year    = {20XX},
+  doi     = {10.xxxx/xxxxx}
+}
+
+% ------------------------------------------------------------
+% Japanese journal article with English information
+% If necessary, include the original Japanese citation in note.
+% ------------------------------------------------------------
+@article{JapaneseArticleKey,
+  author  = {First Author and Second Author},
+  title   = {English Title of the Japanese Journal Article},
+  journal = {English Journal Name},
+  volume  = {00},
+  number  = {0},
+  pages   = {00--00},
+  year    = {20XX},
+  doi     = {10.xxxx/xxxxx},
+  note    = {(in Japanese) 著者名：「和文論文題目」, 和文誌名, 00, 0, pp. 00--00 (20XX)}
+}
+
+% ------------------------------------------------------------
+% Book
+% ------------------------------------------------------------
+@book{BookKey,
+  author    = {First Author and Second Author},
+  title     = {Title of the Book},
+  publisher = {Publisher Name},
+  address   = {City},
+  year      = {20XX}
+}
+
+% ------------------------------------------------------------
+% Chapter in an edited book
+% ------------------------------------------------------------
+@incollection{BookChapterKey,
+  author    = {Chapter Author},
+  title     = {Title of the Chapter},
+  booktitle = {Title of the Book},
+  editor    = {First Editor and Second Editor},
+  publisher = {Publisher Name},
+  address   = {City},
+  pages     = {00--00},
+  year      = {20XX}
+}
+
+% ------------------------------------------------------------
+% International conference paper
+% ------------------------------------------------------------
+@inproceedings{ConferencePaperKey,
+  author    = {First Author and Second Author},
+  title     = {Title of the Conference Paper},
+  booktitle = {Proceedings of the Conference Name},
+  address   = {City, Country},
+  pages     = {00--00},
+  month     = {1},
+  year      = {20XX},
+  doi       = {10.xxxx/xxxxx}
+}
+
+% ------------------------------------------------------------
+% Japanese conference or technical-meeting paper
+% ------------------------------------------------------------
+@inproceedings{JapaneseConferenceKey,
+  author    = {著者名1 and 著者名2},
+  title     = {和文講演題目},
+  booktitle = {講演論文集名},
+  number    = {IIC-XX-XXX},
+  pages     = {00--00},
+  year      = {20XX},
+  note      = {(in Japanese)}
+}
+
+% ------------------------------------------------------------
+% Master's thesis or doctoral dissertation
+% Change type as appropriate.
+% ------------------------------------------------------------
+@mastersthesis{MasterThesisKey,
+  author = {Author Name},
+  title  = {Title of the Master's Thesis},
+  school = {University Name},
+  year   = {20XX}
+}
+
+@phdthesis{DoctoralThesisKey,
+  author = {Author Name},
+  title  = {Title of the Doctoral Dissertation},
+  school = {University Name},
+  year   = {20XX}
+}
+
+% ------------------------------------------------------------
+% Technical report
+% ------------------------------------------------------------
+@techreport{TechnicalReportKey,
+  author      = {Author Name},
+  title       = {Title of the Technical Report},
+  institution = {Institution Name},
+  number      = {Report No. XX-XXX},
+  year        = {20XX}
+}
+
+% ------------------------------------------------------------
+% Web page
+% Use only when a more appropriate publication type is unavailable.
+% ------------------------------------------------------------
+@misc{WebPageKey,
+  author       = {{Organization Name}},
+  title        = {Title of the Web Page},
+  howpublished = {\url{https://example.com/}},
+  note         = {Accessed: YYYY-MM-DD},
+  year         = {20XX}
+}
+
+% ============================================================
+% Citation examples in main.tex
+% ============================================================
+% Single reference:
+%   \cite{JournalArticleKey}
+%
+% Multiple references:
+%   \cite{JournalArticleKey,BookKey,ConferencePaperKey}
+%
+% Keep each citation key unique and use only ASCII letters,
+% numbers, hyphens, and underscores for maximum portability.
+% ============================================================

@@ -1,0 +1,76 @@
+\usepackage{graphicx}
+\usepackage[fleqn]{amsmath}
+\usepackage[varg]{txfonts}
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage{comment}
+\usepackage{siunitx}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{bicaption}
+\captionsetup[bi-first]{justification=centering}
+\captionsetup[bi-second]{justification=centering}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{tikz}
+\newcommand{\red}{\color{red}}
+\newcommand{\black}{\color{black}}
+
+\DeclareDocumentCommand{\drawline}{m O{1pt}}{\protect\tikz[baseline=-0.6ex]\protect\draw[#1,line width=#2](0,0)--(10pt,0);}
+
+\definecolor{univ_k}{rgb}{0,0,0}
+\definecolor{univ_b}{rgb}{0.0,0.353,1.0}
+\definecolor{univ_r}{rgb}{1.0,0.294,0.0}
+\definecolor{univ_g}{rgb}{0.012,0.686,0.478}
+\definecolor{univ_o}{rgb}{0.965,0.667,0.0}
+\definecolor{univ_y}{rgb}{1.0,0.945,0.0}
+\definecolor{univ_s}{rgb}{0.302,0.769,1.0}
+\definecolor{univ_p}{rgb}{1.0,0.502,0.510}
+\definecolor{univ_ppl}{rgb}{0.6,0.0,0.6}
+\definecolor{univ_brw}{rgb}{0.502,0.251,0.0}
+
+% cref環境の導入: https://qiita.com/Hdan/items/8c59a7e0a3215ae32d74
+\usepackage{cleveref}
+\crefname{equation}{}{}% {環境名}{単数形}{複数形} \crefで引くときの表示
+% \crefname{figure}{Fig.}{Figs.}% {環境名}{単数形}{複数形} \crefで引くときの表示
+% \crefname{table}{Table.}{Tables.}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\crefname{figure}{図}{図}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\crefname{table}{表}{表}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\newcommand{\crefpairconjunction}{, }
+\newcommand{\crefrangeconjunction}{から}
+\newcommand{\creflastconjunction}{，}
+
+% Fig. 図の併記
+\makeatletter
+\def\fnum@Jfigure{図} 
+\def\fnum@Efigure{Fig.} 
+\def\fnum@Jtable{表} 
+\def\fnum@Etable{Table} 
+\long\def\@emakecaption#1#2{%
+  \iftdir\sbox\@tempboxa{#1\hskip1zw#2}%
+    \else\sbox\@tempboxa{#1: #2}%
+  \fi
+  \ifdim \wd\@tempboxa >\hsize
+    \iftdir #1\hskip1zw#2\relax\par
+      \else #1: #2\relax\par\fi
+  \else
+    \global \@minipagefalse
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+\long\def\@caption#1[#2]#3#4{%
+  \par
+  \addcontentsline{\csname ext@#1\endcsname}{#1}%
+    {\protect\numberline{\csname the#1\endcsname}{\ignorespaces #2}}%
+  \begingroup
+    \@parboxrestore
+    \if@minipage
+      \@setminipage
+    \fi
+    \small
+    \@makecaption{\csname fnum@J\@captype\endcsname \csname the\@captype\endcsname}{\ignorespaces #3}\par
+    \@emakecaption{\csname fnum@E\@captype\endcsname \csname the\@captype\endcsname}{\ignorespaces #4}\par
+ \endgroup}
+ \makeatother
