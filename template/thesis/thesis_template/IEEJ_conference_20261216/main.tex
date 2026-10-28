@@ -17,8 +17,8 @@
 \articlenumber{IIC-XX-XXX}
 
 % タイトル
-\jtitle{EVの駆動力制御のための\\機械学習を用いた$\mu-\lambda$曲線推定を伴う最適スリップ率推定}
-\etitle{Optimal Slip Ratio Estimation with Machine Learning-Based Road Surface $\mu-\lambda$ Curve Identification for Electric Vehicle Driving Force Control}
+\jtitle{EVの駆動力制御のための\\機械学習を用いた$\mu-\lambda$曲線推定を伴う最適スリップ率推定の基礎検討}
+\etitle{Basic Study on Optimal Slip Ratio Estimation with Machine Learning-Based Road Surface $\mu-\lambda$ Curve Identification for Electric Vehicle Driving Force Control}
 
 % 著者
 \authorlist{%
@@ -53,11 +53,11 @@
 % Keywords and abstract
 % ============================================================
 \begin{jkeyword}
-キーワード1,キーワード2,キーワード3
+電気自動車,インホイールモータ,タイヤモデル推定, スリップ率, 駆動力制御, ニューラルネットワーク
 \end{jkeyword}
 
 \begin{ekeyword}
-keyword 1, keyword 2, keyword 3
+electric vehicle, in-wheel motor, tire model estimation, slip ratio, driving force control, neural network
 \end{ekeyword}
 
 \begin{abstract}
@@ -72,7 +72,13 @@ Offline evaluation using experimental data demonstrates its effectiveness.
 % Main text
 % ============================================================
 \section{序論}
-研究背景，従来研究，課題，本稿の目的および構成を記述する。
+電気自動車(Electric Vehicle : EV)は, 走行時にCO$_2$を排出しないという特徴\cite{oki}に加え, 電動モータを駆動源とするため内燃機関車と比較し応答性や制御性に優れるという特徴がある\cite{yoshimoto}.
+この高いトルク応答性を利用した運動制御に関する研究が盛んに行われている\cite{takahashi}.
+
+EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホイールモータ車(In-Wheel Motor EV : IWM-EV)に分類される. 
+特にIWM-EVはその名の通り各車輪のホイール部分にモータが分散配置されているため, 各輪を独立に制御できドライブシャフトの共振を排除できるという特徴がある. 
+これらの特徴から, IWM-EVを対象とした運動制御に関する研究も盛んに行われており, その一つにタイヤから路面に伝達される駆動力を対象とする駆動力制御(Driving Force Control : DFC)がある\cite{yoshimura}. 
+
 
 % 引用例：\cite{ReferenceKey}
 % 複数引用例：\cite{ReferenceKey1,ReferenceKey2}
