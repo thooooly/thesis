@@ -53,16 +53,16 @@
 % Keywords and abstract
 % ============================================================
 \begin{jkeyword}
-電気自動車,インホイールモータ,タイヤモデル推定, スリップ率, 駆動力制御, ニューラルネットワーク
+電気自動車,インホイールモータ,タイヤモデル推定，スリップ率，駆動力制御，ニューラルネットワーク
 \end{jkeyword}
 
 \begin{ekeyword}
-electric vehicle, in-wheel motor, tire model estimation, slip ratio, driving force control, neural network
+electric vehicle，in-wheel motor，tire model estimation，slip ratio，driving force control，neural network
 \end{ekeyword}
 
 \begin{abstract}
 This paper proposes a method for estimating the optimal slip ratio for electric vehicle driving force control. 
-The proposed method estimates the road surface  $\mu-\lambda$ curve in real time from partially observed data using a machine learning model and determines the optimal slip ratio from its peak.
+The proposed method estimates the tire-road $\mu-\lambda$ curve in real time from partially observed data using a machine learning model and determines the optimal slip ratio from its peak.
 Offline evaluation using experimental data demonstrates its effectiveness.
 \end{abstract}
 
@@ -72,27 +72,73 @@ Offline evaluation using experimental data demonstrates its effectiveness.
 % Main text
 % ============================================================
 \section{序論}
-電気自動車(Electric Vehicle : EV)は, 走行時にCO$_2$を排出しないという特徴\cite{oki}に加え, 電動モータを駆動源とするため内燃機関車と比較し応答性や制御性に優れるという特徴がある\cite{yoshimoto}.
-この高いトルク応答性を利用した運動制御に関する研究が盛んに行われている\cite{takahashi}.
+電気自動車(Electric Vehicle : EV)は，走行時にCO$_2$を排出しないという特徴\cite{oki}に加え，電動モータを駆動源とするため内燃機関車と比較しトルク応答性や制御性に優れるという特徴がある\cite{yoshimoto}。
+この高いトルク応答性を利用した運動制御に関する研究が盛んに行われている\cite{takahashi}。
 
-EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホイールモータ車(In-Wheel Motor EV : IWM-EV)に分類される. 
-特にIWM-EVはその名の通り各車輪のホイール部分にモータが分散配置されているため, 各輪を独立に制御できドライブシャフトの共振を排除できるという特徴がある. 
-これらの特徴から, IWM-EVを対象とした運動制御に関する研究も盛んに行われており, その一つにタイヤから路面に伝達される駆動力を対象とする駆動力制御(Driving Force Control : DFC)がある\cite{yoshimura}. 
+EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホイールモータ車(In-Wheel Motor EV : IWM-EV)に分類される。
+特にIWM-EVはその名の通り各車輪にモータを搭載し，各輪を独立に駆動・制御できるため，ドライブシャフトに起因する共振を排除できるという特徴がある。
+これらの特徴から，IWM-EVを対象とした運動制御に関する研究も盛んに行われており，その一つにタイヤから路面に伝達される駆動力を対象とする駆動力制御(Driving Force Control : DFC)がある\cite{yoshimura}。
 
-駆動力制御は\ref{fig:1_DFC.abs}に示す通り
-\begin{figure}[tb]
-\centering
-\includegraphics[width=\linewidth]{fig/1_DFC_abs.png}
-\caption{駆動力制御(DFC)の運動制御に対する位置づけ}
-\label{fig:1_DFC.abs}
-\caption*{Fig.~\thefigure. The role of DFC in motion control.}
-\end{figure}
+駆動力制御はトラクション制御の一種であり，過大なスリップを抑制するためにスリップ率に上限を設ける機構(以下，スリップ率リミッタ)が内部に存在する。
+これにより，通常走行時は駆動力指令値に追従しながらも，滑りやすい路面(低$\mu$路)においては過度な空転を抑制することができる。
+
+各輪にかかる前後方向の駆動力$F_\mathrm{d}$は次式で表される。
+\begin{equation}
+\label{eq:1_F_d}
+F_\mathrm{d} = \mu(\lambda) F_\mathrm{z}
+\end{equation}
+ここで，$F_\mathrm{z}$はタイヤにかかる垂直荷重であり，$\mu$はタイヤ-路面間の摩擦係数である。
+路面摩擦係数$\mu$はタイヤのスリップ率$\lambda$の経験的な関数として記述できるほか，路面状態によってその関係が異なることが一般に知られている\cite{pacejka}。
+従来の駆動力制御\cite{yoshimura}ではスリップ率リミッタを事前に決定した値に固定する手法をとっていたが，スリップ率リミッタが作動した際に路面ごとに発揮可能な駆動力を出し続けるために，$\mu$が最大値($\mu_\mathrm{peak}$)となる最適スリップ率$\lambda_\mathrm{peak}$を逐次推定しスリップ率リミッタとする研究がこれまで行われてきた\cite{binhminh}。
+一例として，差分逐次最小二乗法を用いて局所的なタイヤ剛性$D_\mathrm{s,local}$を推定する手法\cite{morimoto}，逐次最小二乗法を用いてタイヤブラシモデルのパラメータを推定しスリップ状態の是非を判断する手法\cite{maeda}，路面状態の画像認識結果とタイヤ剛性$D_\mathrm{s,local}$推定結果を融合した手法\cite{mizuguchi}などが提案されている。
+しかしながら，いずれも逐次最小二乗法を用いるため，推定値の収束には十分な持続的励起を要するという問題がある。また，路面状態によってはスリップ率$\lambda$に対し摩擦係数$\mu$が明確なピークを持たず飽和するような場合があり，このような場合には推定が収束しないリスクも生じる。
+
+また，駆動力制御によらず最適スリップ率推定を行う研究\cite{crocetti}も存在し，ニューラルネットワークを使用し，入力された$\lambda，\mu$の情報から$\lambda_\mathrm{peak}$を出力するような研究も存在するが，シミュレーションのみで実機検証されていないほか，学習路面モデルと検証路面モデルの特性が類似し汎化性能が十分とは言えない。
+最適スリップ率推定に限らず，$\mu-\lambda$特性(曲線)全体を推定する手法もいくつか存在する\cite{liang,mussot,berntorp,olazagoitia}が，実車への制御応用を考慮したリアルタイム推定を行うことができているものは存在しない。
+
+そこで本研究では，走行中に意図的なスリップ率励起を不要とし，かつピークが存在しない路面に対しても適切なスリップリミッタを設定可能とするために，リアルタイムに$\mu-\lambda$曲線を推定することにより$\lambda_\mathrm{peak}$を推定する手法を提案する。
+また，$\mu-\lambda$曲線が分かると$\mu_\mathrm{peak}$などタイヤ-路面特性に関わる物理量が多く得られ様々な制御応用が考えられる。
+$\mu-\lambda$曲線推定においては，リアルタイム性を確保するため，機械学習を用い特定のタイヤモデルの関数やパラメータを前提とせずデータ駆動で推定を行う。
+
+本論文の構成を以下に示す。第2章では物理モデルおよび駆動力制御について述べる。第3章では提案手法である機械学習モデルを用いた$\mu-\lambda$曲線推定および$\lambda_\mathrm{peak}$推定法について述べる。
+第4章では提案手法の有効性を，実車測定データを用いたオフライン解析結果により示す。第5章では結論を述べる。
 
 % 引用例：\cite{ReferenceKey}
 % 複数引用例：\cite{ReferenceKey1,ReferenceKey2}
 
 \section{対象システム}
-対象とするシステム，実験装置，モデル化，パラメータなどを記述する。
+\subsection{車両モデル}
+
+\begin{figure}[tb]
+\centering
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\begin{subfigure}{0.43\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{fig/2_car_model.png}
+  \bisubcaption{車両モデル}{Vehicle model}
+  \label{subfig:key-a}
+\end{subfigure}\hfill
+\begin{subfigure}{0.52\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{fig/2_mu-lambda_curve.png}
+  \bisubcaption{$\mu-\lambda$曲線}{$\mu-\lambda$ curve}
+  \label{subfig:key-b}
+\end{subfigure}
+\bicaption{車両およびタイヤの物理モデル}{Physical models of vehicle and tire–road interaction}
+\label{fig:key}
+\end{figure}
+
+
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/1_DFC_circuit.pdf}
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\bicaption{駆動力制御(DFC)のブロック線図}{Block diagram of DFC}
+\label{fig:1_DFC_circuit}
+\end{figure}
 
 \subsection{実験装置の概要}
 実験装置の構成を記述する。
@@ -143,7 +189,7 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 % 本文中の参照例：式(\ref{eq:example})より，以下が得られる。
 
 % \begin{align}
-%   x_1 &= a+b, \\
+%   x_1 &= a+b，\\
 %   x_2 &= c+d
 %   \label{eq:align_example}
 % \end{align}
