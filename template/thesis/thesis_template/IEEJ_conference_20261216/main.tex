@@ -93,7 +93,7 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 駆動力制御はトラクション制御の一種であり，過大なスリップを抑制するためにスリップ率に上限を設ける機構(以下，スリップ率リミッタ)が内部に存在する。
 これにより，通常走行時は駆動力指令値に追従しながらも，滑りやすい路面(低$\mu$路)においては過度な空転を抑制することができる。
 
-各輪にかかる駆動力は，タイヤ-路面間の摩擦力として表されるが，路面摩擦係数$\mu$はタイヤのスリップ率$\lambda$の経験的な関数として記述できるほか，路面状態によってその関係が異なることが一般に知られている\cite{pacejka}。
+各輪にかかる駆動力は，タイヤ-路面間の摩擦力として表されるが，路面摩擦係数$\mu$はタイヤのスリップ率$\lambda$の実験的な関数として記述できるほか，路面状態によってその関係が異なることが一般に知られている\cite{pacejka}。
 従来の駆動力制御の多くではスリップ率リミッタを事前に決定した値に固定する手法をとっていた\cite{yoshimura}が，スリップ率リミッタが作動した際に路面ごとに発揮可能な最大駆動力を出し続けるために，$\mu$が最大値($\mu_\mathrm{peak}$)となる最適スリップ率$\lambda_\mathrm{peak}$を逐次推定しスリップ率リミッタとする研究がこれまで行われてきた\cite{binhminh}。
 一例として，差分逐次最小二乗法を用いて局所的なタイヤ剛性$D_\mathrm{s,local}$を推定する手法\cite{morimoto}，逐次最小二乗法を用いてタイヤブラシモデルのパラメータを推定しスリップ状態の是非を判断する手法\cite{maeda}，路面状態の画像認識結果とタイヤ剛性$D_\mathrm{s,local}$推定結果を融合した手法\cite{mizuguchi}などが提案されている。
 しかしながら，いずれも逐次最小二乗法を用いるため，推定値の収束には十分な持続的励起を要するという問題がある。また，路面状態によってはスリップ率$\lambda$に対し摩擦係数$\mu$が明確なピークを持たず飽和するような場合も報告されており\cite{sui}，このような場合には推定が収束しないリスクも生じる。
@@ -105,8 +105,8 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 また，$\mu-\lambda$曲線の推定により$\mu_\mathrm{peak}$などタイヤ-路面特性に関わる物理量が多く得られ様々な制御応用が考えられる。
 本研究の$\mu-\lambda$曲線推定は，リアルタイム性の確保及び観測された部分的な情報から曲線全体を推定するため，機械学習を用い特定のタイヤモデルの関数やパラメータを前提とせずデータ駆動により行う。
 
-本論文の構成を以下に示す。第2章では実験車両・物理モデルについて述べる。第3章では駆動力制御について述べる。第4章では提案手法である機械学習モデルを用いた$\mu-\lambda$曲線推定および$\lambda_\mathrm{peak}$推定法について述べる。
-第5章では提案手法の有効性を，実車測定データを用いたオフライン解析結果により示す。第6章で結論を述べる。
+本論文の構成を以下に示す。第2章では実験車両・物理モデルについて述べる。第3章では駆動力制御及び提案手法である機械学習モデルを用いた$\mu-\lambda$曲線推定および$\lambda_\mathrm{peak}$推定法について述べる。
+第4章では提案手法の有効性を，実車測定データを用いたオフライン解析結果により示す。第5章で結論を述べる。
 
 
 % 引用例：\cite{ReferenceKey}
@@ -133,8 +133,8 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
           {Experimental vehicle and in-wheel motor}
 \label{fig:2_Kanon_IWM}
 \end{figure}
-実験車両として著者らの研究グループが製作し，本論文で使用した電気自動車「FPEV-2 Kanon」を図\ref{subfig:2_Kanon}に示す。
-この車両は4輪IWM-EVであり，搭載されているインホイールモータを図\ref{subfig:2_IWM}に示す。
+実験車両として著者らの研究グループが製作した4輪IWM-EV「FPEV-2 Kanon」を図\ref{subfig:2_Kanon}に示す。
+搭載されているIWMを図\ref{subfig:2_IWM}に示す。
 
 \subsection{車両モデル}
 
@@ -203,7 +203,7 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \end{equation}
 
 \subsection{タイヤ-路面モデル}
-図\ref{fig:2_mu-lambda_curve}に示す通り，$\mu-\lambda$曲線は非線形な形状を持つ。これに対し，経験的に関数としてフィッティングしたMagic Fomula\cite{pacejka}というモデルが存在する。その式を以下に示す。
+図\ref{fig:2_mu-lambda_curve}に示す通り，$\mu-\lambda$曲線は非線形な形状を持つ。これに対し，実験的に関数としてフィッティングしたMagic Fomula\cite{pacejka}というモデルが存在する。その式を以下に示す。
 \begin{equation}
     \label{eq:2_magicformula}
     \mu_{ij}
@@ -219,10 +219,11 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
     \right)
 \end{equation}
 ここで，ここで，$B$はStiffness factor，$C$はShape factor，$D$はPeak factor，$E$はCurvature factorと呼ばれる係数であり，この4つの係数により$\mu-\lambda$曲線をフィッティングしている. 
-これらは直接的な物理パラメータではなく，実験データへのフィッティングによって決定される経験的な係数である。
+これらは直接的な物理パラメータではなく，実験データへのフィッティングによって決定される係数である。
 このモデルは$\mu-\lambda$曲線の非線形性を高精度に表現できるため，標準的なタイヤモデルとして広く用いられている。
 
-\section{駆動力制御}
+\section{提案手法}
+\subsection{駆動力制御}
 \begin{figure}[tb]
 \centering
 \includegraphics[width=\linewidth]{fig/3_DFC_circuit.pdf}
@@ -232,7 +233,7 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \label{fig:3_DFC_circuit}
 \end{figure}
 駆動力制御は，トラクション制御として用いられている\cite{yoshimura}。ブロック線図を図\ref{fig:3_DFC_circuit}に示す。
-図の通りカスケード構造であり，アウターループは駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
+図の通りカスケード構造をとり，アウターループが駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力制御ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
 
 \begin{figure}[tb]
 \centering
@@ -242,7 +243,7 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \bicaption{駆動力オブザーバ(DFO)}{Driving Force Observer : DFO}
 \label{fig:3_DFO}
 \end{figure}
-DFOのブロック線図を図\ref{fig:3_DFO}に示す。推定される駆動力$\hat{F}_{\mathrm{d},ij}$は以下の式で表される。
+DFOのブロック線図を図\ref{fig:3_DFO}に示す。推定される駆動力$\hat{F}_{\mathrm{d},ij}$は式\ref{eq:2_F_d}を変形し，以下の式で表される。
 \begin{equation}
 \label{eq:3_DFO}
 \hat{F}_{\mathrm{d},ij} = Q_{\mathrm{f}}(s) \frac{ T^{*}_{ij} - J_{\omega,ij}\dot{\omega}_{ij} }{r}
@@ -254,15 +255,13 @@ DFOのブロック線図を図\ref{fig:3_DFO}に示す。推定される駆動�
 \label{eq:3_y}
 y_{ij} = \frac{r \omega_{ij} - V}{V} = \frac{r \omega_{ij}}{V} - 1
 \end{equation}
-$y_\mathrm{ij}$は制動時のスリップ率に等しく，駆動力指令値に対しI制御を行うことで指令値$y^*$を生成する。一方，最大摩擦係数$\mu_\mathrm{peak}$が小さく滑りやすい路面(低$\mu$路)においては物理的に発揮可能な最大駆動力$F_\mathrm{d,max}( = \mu_\mathrm{peak} F_\mathrm{z})$が駆動力指令値$F_\mathrm{d}^*$を下回る可能性があり，そのような場合積分器の出力$y^*$が過大となり図\ref{fig:2_mu-lambda_curve}に示すようにグリップ力が低下し空転リスクが生じる。そこで，スリップ率リミッタで$\mu_\mathrm{peak}$が飽和する前のスリップ率を上限とすることでトラクション効果を生み出す。
+$y_\mathrm{ij}$は制動時のスリップ率に等しく，低スリップ領域では$y, \lambda$はほぼ同じ値を取る。また，駆動力指令値に対しI制御を行うことで指令値$y^*$を生成する。一方，最大摩擦係数$\mu_\mathrm{peak}$が小さく滑りやすい路面(低$\mu$路)においては物理的に発揮可能な最大駆動力$F_\mathrm{d,max}( = \mu_\mathrm{peak} F_\mathrm{z})$が駆動力指令値$F_\mathrm{d}^*$を下回る可能性があり，そのような場合スリップが過大となるリスクがある。そこで，スリップ率リミッタでスリップ率を制限することによりトラクション効果を生み出すことができる。
 
 このスリップ率リミッタの値を，図\ref{fig:2_mu-lambda_curve}に示すような$\mu$が最大となる（もしくは飽和する）最適スリップ率$\lambda_\mathrm{peak}$に設定することで，トラクション効果と駆動力最大化による運動性の向上を両立することができる。
 
-\section{提案$\lambda_\mathrm{peak}$推定手法}
-\subsection{手法の概要}
+\subsection{$\lambda_\mathrm{peak}$推定}
 
-本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートを図\ref{4_prop_abst}に示す。
-
+本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートを
 
 \subsection{設計方法}
 設計式やアルゴリズムを記述する。
