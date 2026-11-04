@@ -259,9 +259,25 @@ $y_\mathrm{ij}$は制動時のスリップ率に等しく，低スリップ領�
 
 このスリップ率リミッタの値を，図\ref{fig:2_mu-lambda_curve}に示すような$\mu$が最大となる（もしくは飽和する）最適スリップ率$\lambda_\mathrm{peak}$に設定することで，トラクション効果と駆動力最大化による運動性の向上を両立することができる。
 
-\subsection{$\lambda_\mathrm{peak}$推定}
+\subsection{提案$\lambda_\mathrm{peak}$推定手法の概要}
+本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートを<図を作る>に示す。
+曲線の推定には，多層パーセプトロン(Multi-Layer Perceptron : MLP)を用い，逐次計測された$\mu, \lambda$からリアルタイムに$\mu-\lambda$曲線を出力する。
 
-本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートを
+\subsection{MLPの入力}
+まず，実測された駆動輪の角速度$\omega_{ij}$及び車両速度$V$よりスリップ率$\lambda_{ij}$および摩擦係数$\mu$を計算し一定点数をバッファする。
+$\lambda_{ij}$は式\ref{eq:2_lambda}に基づき求める。$\mu$は式\ref{eq:2_F_d}よりDFOの出力$\hat{F}_{\mathrm{d},ij}$と垂直荷重推定値$\hat{F}_{z,ij}$から求める。
+$\hat{F}_{z,ij}$は，実測された加速度$a_x$を用いて式\ref{eq:2_F_z}に基づき計算される。
+
+続いて，バッファされた$(\lambda, \mu)$プロットを一定間隔$\Delta \lambda$でグリッド分けし，グリッドの内の点の$mu$の平均値を各グリッドの代表点とする。
+これによりMLPへの入力サイズを固定化する。さらに，各代表点のうち最も$\mu$が大きい値($\tilde{\mu}_\mathrm{max}$)で，各グリッドの代表点を正規化する。
+これにより学習データの$\mu$スケールの影響を受けず様々な路面特性に対する汎化性能を発揮することができる。
+
+最終的な入力は，$n$グリッドの正規化された代表値$\boldsymbol{\mu}_{\mathrm{in,norm},k}$に加え，部分的な観測情報からの復元の補助情報として，各グリッドに測定点が含まれるかを0もしくは1で記した$\boldsymbol{m}_k$及び$\tilde{\mu}_{\mathrm{max},k}$の計$2n+1$次元のベクトルである。
+
+\subsection{MLPの学習}
+学習に用いた教師データは，MATLAB/Simulinkを用いて作成した。教師曲線の作成には先述のMagic Formulaモデルを利用し，様々な形状を再現した。
+使用した教師曲線の一覧を図<作成する>に示す。
+
 
 \subsection{設計方法}
 設計式やアルゴリズムを記述する。
