@@ -323,7 +323,30 @@ G_{\mu,k} = \frac{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out
 以上の処理により，逐次$\mu-\lambda$曲線をノンパラメトリックに推定することができる。
 
 \subsection{$\lambda_\mathrm{peak}$推定}
-得られた推定$\mu-\lambda$曲線から，$\lambda_\mathrm{peak}$の推定を行う。各グリッドにおいて，
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=\linewidth]{fig/3_estimate_peak.png}
+  \captionsetup[bi-first]{name=図}
+  \captionsetup[bi-second]{name=Fig.}
+  \bicaption{$\hat{\lambda}_\mathrm{peak}$推定アルゴリズム}{$\hat{\lambda}_\mathrm{peak}$ estimation algorithm}
+  \label{fig:3_estimate_peak}
+  \end{figure}
+得られた推定$\mu-\lambda$曲線から，$\lambda_\mathrm{peak}$の推定を行う。
+推定のフローチャートを図\ref{fig:3_estimate_peak}に示す。
+まず，各グリッド$i$における$\mu-\lambda$曲線の傾き$\hat{D}_{\mathrm{s,local},i}$を次式により推定する。
+\begin{equation}
+\label{eq:3_D_s}
+\hat{D}_{\mathrm{s,local},i} = \frac{ \mu_{i+1}-\mu_{i-1} }{ 2\Delta\lambda }.
+\end{equation}
+ここで$\Delta \lambda$はグリッド幅であるほか，両端のグリッドでは中心差分ではなく片側差分により$\hat{D}_{\mathrm{s,local},i}$を求める。
+
+次に，連続する50グリッドの集合について，そのうち20グリッドで$\hat{D}_{\mathrm{s,local},i} < 0$となる$\lambda$が最小の集合を決定し，その中で最も大きな$\mu$をピーク摩擦係数$\hat{\mu}_\mathrm{peak}$，
+その時の$\lambda$を最適スリップ率$\hat{\lambda}_\mathrm{peak}$とする。
+対象とする$\lambda$の範囲にそのような条件を満たす集合が存在しない場合，判定閾値を$\hat{D}_{\mathrm{s,local},i} < 0.05$とし同様の探索を行う。
+それでも条件を満たさない場合は$\hat{D}_{\mathrm{s,local},i} < 0.10$とし，これ以上見つからない場合は，$\hat{\lambda}_\mathrm{peak} = 0.30$とし推定を打ち切る。
+
+これにより，ピークが明確に存在しない場合でも$\mu$が飽和するスリップ率を最適スリップ率として推定できるほか，推定$\mu-\lambda$曲線に振動が残っていてもロバストなピーク点判定を行うことができる。
+
 
 
 
