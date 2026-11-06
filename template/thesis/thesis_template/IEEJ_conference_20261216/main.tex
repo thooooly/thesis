@@ -87,15 +87,22 @@ Offline evaluation using experimental data demonstrates its effectiveness.
 この高いトルク応答性を利用した運動制御に関する研究が盛んに行われている\cite{takahashi}。
 
 EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホイールモータ車(In-Wheel Motor EV : IWM-EV)に分類される。
-特にIWM-EVはその名の通り各車輪にモータを搭載し，各輪を独立に駆動・制御できるうえ，ドライブシャフトに起因する共振を排除できるという特徴がある。
+特にIWM-EVはその名のとおり各車輪にモータを搭載し，各輪を独立に駆動・制御できるうえ，ドライブシャフトに起因する共振を排除できるという特徴がある。
 これらの特徴から，IWM-EVを対象とした運動制御に関する研究も盛んに行われており，その一つにタイヤから路面に伝達される駆動力を対象とする駆動力制御(Driving Force Control : DFC)がある\cite{yoshimura}。
 
 駆動力制御はトラクション制御の一種であり，過大なスリップを抑制するためにスリップ率に上限を設ける機構(以下，スリップ率リミッタ)が内部に存在する。
 これにより，通常走行時は駆動力指令値に追従しながらも，滑りやすい路面(低$\mu$路)においては過度な空転を抑制することができる。
-
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{fig/prop_flow.pdf}
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\bicaption{提案手法ブロック線図}{Block diagram of the proposal method}
+\label{fig:prop_flow}
+\end{figure}
 各輪にかかる駆動力は，タイヤ-路面間の摩擦力として表されるが，路面摩擦係数$\mu$はタイヤのスリップ率$\lambda$の実験的な関数として記述できるほか，路面状態によってその関係が異なることが一般に知られている\cite{pacejka}。
 従来の駆動力制御の多くではスリップ率リミッタを事前に決定した値に固定する手法をとっていた\cite{yoshimura}が，スリップ率リミッタが作動した際に路面ごとに発揮可能な最大駆動力を出し続けるために，$\mu$が最大値($\mu_\mathrm{peak}$)となる最適スリップ率$\lambda_\mathrm{peak}$を逐次推定しスリップ率リミッタとする研究がこれまで行われてきた\cite{binhminh}。
-一例として，差分逐次最小二乗法を用いて局所的なタイヤ剛性$D_\mathrm{s,local}$を推定する手法\cite{morimoto}，逐次最小二乗法を用いてタイヤブラシモデルのパラメータを推定しスリップ状態の是非を判断する手法\cite{maeda}，路面状態の画像認識結果とタイヤ剛性$D_\mathrm{s,local}$推定結果を融合した手法\cite{mizuguchi}などが提案されている。
+一例として，局所的なタイヤ剛性$D_\mathrm{s,local}$から$\lambda_\mathrm{peak}$を推定する手法\cite{morimoto}，逐次最小二乗法を用いてタイヤブラシモデルのパラメータを推定しスリップ状態の是非を判断する手法\cite{maeda}，路面状態の画像認識結果とタイヤ剛性$D_\mathrm{s,local}$推定結果を融合した手法\cite{mizuguchi}などが提案されている。
 しかしながら，いずれも逐次最小二乗法を用いるため，推定値の収束には十分な持続的励起を要するという問題がある。また，路面状態によってはスリップ率$\lambda$に対し摩擦係数$\mu$が明確なピークを持たず飽和するような場合も報告されており\cite{sui}，このような場合には推定が収束しないリスクも生じる。
 
 また，駆動力制御によらず最適スリップ率推定を行う研究として，ニューラルネットワークを使用し，入力された$\lambda，\mu$の情報から$\lambda_\mathrm{peak}$を出力するような研究も存在する\cite{crocetti}が，シミュレーションのみで実機検証されていないほか，学習路面モデルと検証路面モデルの特性が類似し汎化性能が十分とは言えない。
@@ -106,8 +113,7 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 本研究の$\mu-\lambda$曲線推定は，リアルタイム性の確保及び観測された部分的な情報から曲線全体を推定するため，機械学習を用い特定のタイヤモデルの関数やパラメータを前提とせずデータ駆動により行う。
 
 本論文の構成を以下に示す。第2章では実験車両・物理モデルについて述べる。第3章では駆動力制御及び提案手法である機械学習モデルを用いた$\mu-\lambda$曲線推定および$\lambda_\mathrm{peak}$推定法について述べる。
-第4章では提案手法の有効性を，実車測定データを用いたオフライン解析結果により示す。第5章で結論を述べる。
-
+第4章では提案手法の有効性を，実車測定データにおける駆動力の比較により示す。第5章で結論を述べる。
 
 % 引用例：\cite{ReferenceKey}
 % 複数引用例：\cite{ReferenceKey1,ReferenceKey2}
@@ -203,7 +209,7 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \end{equation}
 
 \subsection{タイヤ-路面モデル}
-図\ref{fig:2_mu-lambda_curve}に示す通り，$\mu-\lambda$曲線は非線形な形状を持つ。これに対し，実験的に関数としてフィッティングしたMagic Fomula\cite{pacejka}というモデルが存在する。その式を以下に示す。
+図\ref{fig:2_mu-lambda_curve}に示すとおり，$\mu-\lambda$曲線は非線形な形状を持つ。これに対し，実験的に関数としてフィッティングしたMagic Fomula\cite{pacejka}というモデルが存在する。その式を以下に示す。
 \begin{equation}
     \label{eq:2_magicformula}
     \mu_{ij}
@@ -233,7 +239,7 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \label{fig:3_DFC_circuit}
 \end{figure}
 駆動力制御は，トラクション制御として用いられている\cite{yoshimura}。ブロック線図を図\ref{fig:3_DFC_circuit}に示す。
-図の通りカスケード構造をとり，アウターループが駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力制御ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
+図のとおりカスケード構造をとり，アウターループが駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力制御ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
 
 \begin{figure}[tb]
 \centering
@@ -260,27 +266,68 @@ $y_\mathrm{ij}$は制動時のスリップ率に等しく，低スリップ領�
 このスリップ率リミッタの値を，図\ref{fig:2_mu-lambda_curve}に示すような$\mu$が最大となる（もしくは飽和する）最適スリップ率$\lambda_\mathrm{peak}$に設定することで，トラクション効果と駆動力最大化による運動性の向上を両立することができる。
 
 \subsection{提案$\lambda_\mathrm{peak}$推定手法の概要}
-本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートを<図を作る>に示す。
+本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートは図\ref{fig:prop_flow}に示したとおりである。
 曲線の推定には，多層パーセプトロン(Multi-Layer Perceptron : MLP)を用い，逐次計測された$\mu, \lambda$からリアルタイムに$\mu-\lambda$曲線を出力する。
+
+\subsection{MLPの構造・学習条件}
+本研究では，$\mu-\lambda$曲線を逐次推定するため，3層の隠れ層を有する全結合型多層パーセプトロンを用いた。
+後述するように，入力層の次元数は$2n+1$，出力層の次元数は$n$であり，各隠れ層のユニット数は128とした。
+各隠れ層の活性化関数にはReLU関数を用い，出力層は線形活性化関数を用いた。
+学習にはAdamを用い，学習率を$1.0\times10^{-4}$，ミニバッチサイズを1024，学習エポック数を1000とした。
 
 \subsection{MLPの入力}
 まず，実測された駆動輪の角速度$\omega_{ij}$及び車両速度$V$よりスリップ率$\lambda_{ij}$および摩擦係数$\mu$を計算し一定点数をバッファする。
 $\lambda_{ij}$は式\ref{eq:2_lambda}に基づき求める。$\mu$は式\ref{eq:2_F_d}よりDFOの出力$\hat{F}_{\mathrm{d},ij}$と垂直荷重推定値$\hat{F}_{z,ij}$から求める。
 $\hat{F}_{z,ij}$は，実測された加速度$a_x$を用いて式\ref{eq:2_F_z}に基づき計算される。
 
-続いて，バッファされた$(\lambda, \mu)$プロットを一定間隔$\Delta \lambda$でグリッド分けし，グリッドの内の点の$mu$の平均値を各グリッドの代表点とする。
+続いて，バッファされた$(\lambda, \mu)$プロットを一定間隔$\Delta \lambda$でグリッド分けし，グリッドの内の点の$\mu$の平均値を各グリッドの代表点とする。
 これによりMLPへの入力サイズを固定化する。さらに，各代表点のうち最も$\mu$が大きい値($\tilde{\mu}_\mathrm{max}$)で，各グリッドの代表点を正規化する。
 これにより学習データの$\mu$スケールの影響を受けず様々な路面特性に対する汎化性能を発揮することができる。
 
-最終的な入力は，$n$グリッドの正規化された代表値$\boldsymbol{\mu}_{\mathrm{in,norm},k}$に加え，部分的な観測情報からの復元の補助情報として，各グリッドに測定点が含まれるかを0もしくは1で記した$\boldsymbol{m}_k$及び$\tilde{\mu}_{\mathrm{max},k}$の計$2n+1$次元のベクトルである。
+最終的な入力は，各時刻ステップ$k$に対し$n$グリッドの正規化された代表値$\boldsymbol{\tilde\mu}_{\mathrm{in},k}$に加え，部分的な観測情報からの復元の補助情報として，各グリッドに測定点が含まれるかを0もしくは1で記した$\boldsymbol{m}_k$及び$\tilde{\mu}_{\mathrm{max},k}$の計$2n+1$次元のベクトルである。
+本稿では，対象とするスリップ率の範囲は現実的なスリップ率を考え$0 \le \lambda \le0.5$とし，$n = 501$とした。
 
 \subsection{MLPの学習}
-学習に用いた教師データは，MATLAB/Simulinkを用いて作成した。教師曲線の作成には先述のMagic Formulaモデルを利用し，様々な形状を再現した。
-使用した教師曲線の一覧を図<作成する>に示す。
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.8\linewidth]{fig/3_magic_formula_curves.png}
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\bicaption{学習$\mu-\lambda$曲線}{Learned $\mu-\lambda$ curves}
+\label{fig:3_magic_formula_curve}
+\end{figure}
+学習に用いた教師データは，MATLAB/Simulinkを用いて作成した。教師曲線の作成には先述のMagic Formulaモデルを利用し，$\mu$により形状が決定されないよう，$\mu_\mathrm{peak}$に影響を与える係数$D$を固定し曲線の形状を様々設定し，その後に$D$を$0.2, 0.3, 0.4, 0.5$に変更し，計72種類の教師路面データを作成した。
+使用した教師曲線の一覧を図\ref{fig:3_magic_formula_curve}に示す。
+
+また，学習用の入力データには各路面での走行を模擬したシミュレーション結果を用いた。実装時に走行中に得られるのは部分的な$\mu-\lambda$プロットであるため，学習段階でも部分的な観測情報を再現する必要がある。
+そこで，シミュレーション上で$0 \le \lambda \le 0.6$の範囲で指令値を三角波状に与えたスリップ率制御を行い十分広い範囲の$\mu-\lambda$特性を取得したのち，ランダムシードを用いてランダムな範囲で入力を与えた。
+
+MLPの学習モデルの損失関数は次式に示すとおりである。
+\begin{equation}
+\label{eq:3_L_total}
+L_\mathrm{Total} = 0.1 L_\mathrm{Data} + 1.0 L_\mathrm{Input}
+\end{equation}
+$L_\mathrm{Data}$と$L_\mathrm{Input}$はそれぞれ教師データ，入力データとのMSEであり，いずれもグリッド化しグリッド内の平均をとった値とのMSEを計算している。また，入力データは内部に測定点が1点以上存在するグリッドのみを対象としている。
+$L_\mathrm{Data}$に対し$L_\mathrm{Input}$の重みを十分大きくすることで，観測点が存在するグリッドでは十分観測点に近い値を出力しながらも，観測点が存在しない範囲では教師データによる外挿によって自然な$\mu-\lambda$曲線を出力することができる。
+
+\subsection{MLPの出力}
+MLPの出力は，各スリップ率グリッドにおける正規化された摩擦係数推定値からなる$n$次元ベクトル$\boldsymbol{\tilde\mu}_{\mathrm{out},k}$である。ただし，MLPは各グリッド点の推定値を独立して出力しているため，$\mu-\lambda$平面上では振動を含む。この振動を低減するため，多項式次数を$3$, 窓幅を$51$とするSavitzky-Golayフィルタ\cite{SGfilter}を適用する。
+
+続いて正規化された出力を観測点のスケールに補正する。スケール補正ゲインを$G_{\mu,k}$とし，$\boldsymbol{\tilde\mu}_{\mathrm{out},k}$に$G_{\mu,k}$をかけた値と正規化前の観測値$\boldsymbol{\mu}_{\mathrm{in},k}$との二乗誤差の総和を最小にするように設定すると，$G_{\mu,k}$は以下の数式で与えられる。
+\begin{equation}
+\label{eq:G_mu}
+G_{\mu,k} = \frac{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out},i,k} \,\mu_{\mathrm{in},i,k} }{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out},i,k}^{2} }
+\end{equation}
+ここで，$i\in\{1,\ldots,n\}$はグリッド番号を表し， $m_{i,k}=1$は時刻$k$においてグリッド$i$に観測点が存在することを表す。
+
+以上の処理により，逐次$\mu-\lambda$曲線をノンパラメトリックに推定することができる。
+
+\subsection{$\lambda_\mathrm{peak}$推定}
+得られた推定$\mu-\lambda$曲線から，$\lambda_\mathrm{peak}$の推定を行う。各グリッドにおいて，
 
 
-\subsection{設計方法}
-設計式やアルゴリズムを記述する。
+
+
 
 \section{検証}
 シミュレーションおよび実験による検証方法を記述する。
