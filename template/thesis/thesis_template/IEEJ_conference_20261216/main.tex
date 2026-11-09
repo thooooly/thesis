@@ -106,7 +106,7 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 しかしながら，いずれも逐次最小二乗法を用いるため，推定値の収束には十分な持続的励起を要するという問題がある。また，路面状態によってはスリップ率$\lambda$に対し摩擦係数$\mu$が明確なピークを持たず飽和するような場合も報告されており\cite{sui}，このような場合には推定が収束しないリスクも生じる。
 
 また，駆動力制御によらず最適スリップ率推定を行う研究として，ニューラルネットワークを使用し，入力された$\lambda，\mu$の情報から$\lambda_\mathrm{peak}$を出力するような研究も存在する\cite{crocetti}が，シミュレーションのみで実機検証されていないほか，学習路面モデルと検証路面モデルの特性が類似し汎化性能が十分とは言えない。
-最適スリップ率推定に限らず，$\mu-\lambda$特性(曲線)全体を推定する手法も存在する\cite{liang,mussot,berntorp,olazagoitia}が，実車への制御応用を考慮したリアルタイム推定を行うことができているものは存在しない。
+最適スリップ率推定に限らず，$\mu-\lambda$特性(曲線)全体を推定する手法も存在する\cite{mussot,berntorp,olazagoitia}が，実車への制御応用を考慮したリアルタイム推定を行うことができているものは存在しない。
 
 そこで本論文では，走行中に意図的なスリップ率励起を不要とし，かつピークが存在しない路面に対しても適切なスリップリミッタを設定可能とするために，リアルタイムに$\mu-\lambda$曲線を推定することにより$\lambda_\mathrm{peak}$を推定する手法を提案する。
 また，$\mu-\lambda$曲線の推定により$\mu_\mathrm{peak}$などタイヤ-路面特性に関わる物理量が多く得られ様々な制御応用が考えられる。
@@ -118,35 +118,13 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 % 引用例：\cite{ReferenceKey}
 % 複数引用例：\cite{ReferenceKey1,ReferenceKey2}
 
-\section{実験車両と物理モデル}
-\subsection{実験車両}
-
-\begin{figure}[tb]
-\centering
-\begin{subfigure}{0.55\linewidth}
-  \centering
-  \includegraphics[height=2.7cm]{fig/2_Kanon.pdf}
-  \bisubcaption{FPEV-2 Kanon}{FPEV-2 Kanon}
-  \label{subfig:2_Kanon}
-\end{subfigure}\hfill
-\begin{subfigure}{0.4\linewidth}
-  \centering
-  \includegraphics[height=2.7cm]{fig/2_Kanon_front_IWM.pdf}
-  \bisubcaption{インホイールモータ}{In-wheel motor}
-  \label{subfig:2_IWM}
-\end{subfigure}
-\bicaption{実験車両とインホイールモータ}
-          {Experimental vehicle and in-wheel motor}
-\label{fig:2_Kanon_IWM}
-\end{figure}
-実験車両として著者らの研究グループが製作した4輪IWM-EV「FPEV-2 Kanon」を図\ref{subfig:2_Kanon}に示す。
-搭載されているIWMを図\ref{subfig:2_IWM}に示す。
+\section{物理モデル}
 
 \subsection{車両モデル}
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=0.8\linewidth]{fig/2_vehicle_model_4tires_cropped.pdf}
+\includegraphics[width=0.8\linewidth]{fig/2_vehicle_model_4tires.pdf}
 \captionsetup[bi-first]{name=図}
 \captionsetup[bi-second]{name=Fig.}
 \bicaption{車両モデル}{Vehicle model}
@@ -269,25 +247,27 @@ $y_\mathrm{ij}$は制動時のスリップ率に等しく，低スリップ領�
 本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートは図\ref{fig:prop_flow}に示したとおりである。
 曲線の推定には，多層パーセプトロン(Multi-Layer Perceptron : MLP)を用い，逐次計測された$\mu, \lambda$からリアルタイムに$\mu-\lambda$曲線を出力する。
 
-\subsection{MLPの構造・学習条件}
-本研究では，$\mu-\lambda$曲線を逐次推定するため，3層の隠れ層を有する全結合型多層パーセプトロンを用いた。
+
+\subsection{MLPを用いた$\mu-\lambda$曲線推定}
+\subsubsection{MLPの構造・学習条件}
+本研究では，$\mu-\lambda$曲線を逐次推定するため，3層の隠れ層を有する全結合型MLPを用いた。
 後述するように，入力層の次元数は$2n+1$，出力層の次元数は$n$であり，各隠れ層のユニット数は128とした。
 各隠れ層の活性化関数にはReLU関数を用い，出力層は線形活性化関数を用いた。
-学習にはAdamを用い，学習率を$1.0\times10^{-4}$，ミニバッチサイズを1024，学習エポック数を1000とした。
+最適化手法としてAdam\cite{kingma}を用い，学習率を$1.0\times10^{-4}$，ミニバッチサイズを1024，学習エポック数を1000とした。
 
-\subsection{MLPの入力}
-まず，実測された駆動輪の角速度$\omega_{ij}$及び車両速度$V$よりスリップ率$\lambda_{ij}$および摩擦係数$\mu$を計算し一定点数をバッファする。
+\subsubsection{MLPの入力}
+まず，実測された駆動輪の角速度$\omega_{ij}$及び車両速度$V$よりスリップ率$\lambda_{ij}$および摩擦係数$\mu$を計算し直近200点をバッファする。
 $\lambda_{ij}$は式\ref{eq:2_lambda}に基づき求める。$\mu$は式\ref{eq:2_F_d}よりDFOの出力$\hat{F}_{\mathrm{d},ij}$と垂直荷重推定値$\hat{F}_{z,ij}$から求める。
 $\hat{F}_{z,ij}$は，実測された加速度$a_x$を用いて式\ref{eq:2_F_z}に基づき計算される。
 
-続いて，バッファされた$(\lambda, \mu)$プロットを一定間隔$\Delta \lambda$でグリッド分けし，グリッドの内の点の$\mu$の平均値を各グリッドの代表点とする。
+続いて，バッファされた$(\lambda, \mu)$プロットを一定間隔$\Delta \lambda (= 0.001)$でグリッド分けし，グリッドの内の点の$\mu$の平均値を各グリッドの代表点とする。
 これによりMLPへの入力サイズを固定化する。さらに，各代表点のうち最も$\mu$が大きい値($\tilde{\mu}_\mathrm{max}$)で，各グリッドの代表点を正規化する。
 これにより学習データの$\mu$スケールの影響を受けず様々な路面特性に対する汎化性能を発揮することができる。
 
 最終的な入力は，各時刻ステップ$k$に対し$n$グリッドの正規化された代表値$\boldsymbol{\tilde\mu}_{\mathrm{in},k}$に加え，部分的な観測情報からの復元の補助情報として，各グリッドに測定点が含まれるかを0もしくは1で記した$\boldsymbol{m}_k$及び$\tilde{\mu}_{\mathrm{max},k}$の計$2n+1$次元のベクトルである。
 本稿では，対象とするスリップ率の範囲は現実的なスリップ率を考え$0 \le \lambda \le0.5$とし，$n = 501$とした。
 
-\subsection{MLPの学習}
+\subsubsection{MLPの学習}
 \begin{figure}[tb]
 \centering
 \includegraphics[width=0.8\linewidth]{fig/3_magic_formula_curves.png}
@@ -310,7 +290,7 @@ L_\mathrm{Total} = 0.1 L_\mathrm{Data} + 1.0 L_\mathrm{Input}
 $L_\mathrm{Data}$と$L_\mathrm{Input}$はそれぞれ教師データ，入力データとのMSEであり，いずれもグリッド化しグリッド内の平均をとった値とのMSEを計算している。また，入力データは内部に測定点が1点以上存在するグリッドのみを対象としている。
 $L_\mathrm{Data}$に対し$L_\mathrm{Input}$の重みを十分大きくすることで，観測点が存在するグリッドでは十分観測点に近い値を出力しながらも，観測点が存在しない範囲では教師データによる外挿によって自然な$\mu-\lambda$曲線を出力することができる。
 
-\subsection{MLPの出力}
+\subsubsection{MLPの出力}
 MLPの出力は，各スリップ率グリッドにおける正規化された摩擦係数推定値からなる$n$次元ベクトル$\boldsymbol{\tilde\mu}_{\mathrm{out},k}$である。ただし，MLPは各グリッド点の推定値を独立して出力しているため，$\mu-\lambda$平面上では振動を含む。この振動を低減するため，多項式次数を$3$, 窓幅を$51$とするSavitzky-Golayフィルタ\cite{SGfilter}を適用する。
 
 続いて正規化された出力を観測点のスケールに補正する。スケール補正ゲインを$G_{\mu,k}$とし，$\boldsymbol{\tilde\mu}_{\mathrm{out},k}$に$G_{\mu,k}$をかけた値と正規化前の観測値$\boldsymbol{\mu}_{\mathrm{in},k}$との二乗誤差の総和を最小にするように設定すると，$G_{\mu,k}$は以下の数式で与えられる。
@@ -352,8 +332,29 @@ G_{\mu,k} = \frac{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out
 
 
 
-\section{検証}
-シミュレーションおよび実験による検証方法を記述する。
+\section{実験内容・結果}
+\subsection{実験車両}
+
+\begin{figure}[tb]
+\centering
+\begin{subfigure}{0.55\linewidth}
+  \centering
+  \includegraphics[height=2.7cm]{fig/2_Kanon.pdf}
+  \bisubcaption{FPEV-2 Kanon}{FPEV-2 Kanon}
+  \label{subfig:2_Kanon}
+\end{subfigure}\hfill
+\begin{subfigure}{0.4\linewidth}
+  \centering
+  \includegraphics[height=2.7cm]{fig/2_Kanon_front_IWM.pdf}
+  \bisubcaption{インホイールモータ}{In-wheel motor}
+  \label{subfig:2_IWM}
+\end{subfigure}
+\bicaption{実験車両とインホイールモータ}
+          {Experimental vehicle and in-wheel motor}
+\label{fig:2_Kanon_IWM}
+\end{figure}
+実験車両として著者らの研究グループが製作した4輪IWM-EV「FPEV-2 Kanon」を図\ref{subfig:2_Kanon}に示す。
+搭載されているIWMを図\ref{subfig:2_IWM}に示す。
 
 \subsection{検証条件}
 シミュレーション条件，実験条件，評価指標などを記述する。
