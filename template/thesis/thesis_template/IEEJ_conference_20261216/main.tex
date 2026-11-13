@@ -64,11 +64,11 @@
 % Keywords and abstract
 % ============================================================
 \begin{jkeyword}
-電気自動車，インホイールモータ，タイヤモデル推定，スリップ率，駆動力制御，ニューラルネットワーク
+電気自動車,インホイールモータ,タイヤモデル推定,スリップ率,駆動力制御,ニューラルネットワーク
 \end{jkeyword}
 
 \begin{ekeyword}
-electric vehicle，in-wheel motor，tire model estimation，slip ratio，driving force control，neural network
+electric vehicle, in-wheel motor, tire model estimation, slip ratio driving force control, neural network
 \end{ekeyword}
 
 \begin{abstract}
@@ -83,6 +83,7 @@ Offline evaluation using experimental data demonstrates its effectiveness.
 % Main text
 % ============================================================
 \section{序論}
+
 電気自動車(Electric Vehicle : EV)は，走行時にCO$_2$を排出しないという特徴\cite{oki}に加え，電動モータを駆動源とするため内燃機関車と比較しトルク応答性や制御性に優れるという特徴がある\cite{yoshimoto}。
 この高いトルク応答性を利用した運動制御に関する研究が盛んに行われている\cite{takahashi}。
 
@@ -92,14 +93,16 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 
 駆動力制御はトラクション制御の一種であり，過大なスリップを抑制するためにスリップ率に上限を設ける機構(以下，スリップ率リミッタ)が内部に存在する。
 これにより，通常走行時は駆動力指令値に追従しながらも，滑りやすい路面(低$\mu$路)においては過度な空転を抑制することができる。
+
 \begin{figure}[tb]
 \centering
-\includegraphics[width=\linewidth]{fig/prop_flow.pdf}
+\includegraphics[width=\linewidth]{fig/1_prop_flow_simple.pdf}
 \captionsetup[bi-first]{name=図}
 \captionsetup[bi-second]{name=Fig.}
-\bicaption{提案手法ブロック線図}{Block diagram of the proposal method}
-\label{fig:prop_flow}
+\bicaption{提案手法の概要}{Overview of the proposal method}
+\label{fig:1_prop_flow_simple}
 \end{figure}
+
 各輪にかかる駆動力は，タイヤ-路面間の摩擦力として表されるが，路面摩擦係数$\mu$はタイヤのスリップ率$\lambda$の実験的な関数として記述できるほか，路面状態によってその関係が異なることが一般に知られている\cite{pacejka}。
 従来の駆動力制御の多くではスリップ率リミッタを事前に決定した値に固定する手法をとっていた\cite{yoshimura}が，スリップ率リミッタが作動した際に路面ごとに発揮可能な最大駆動力を出し続けるために，$\mu$が最大値($\mu_\mathrm{peak}$)となる最適スリップ率$\lambda_\mathrm{peak}$を逐次推定しスリップ率リミッタとする研究がこれまで行われてきた\cite{binhminh}。
 一例として，局所的なタイヤ剛性$D_\mathrm{s,local}$から$\lambda_\mathrm{peak}$を推定する手法\cite{morimoto}，逐次最小二乗法を用いてタイヤブラシモデルのパラメータを推定しスリップ状態の是非を判断する手法\cite{maeda}，路面状態の画像認識結果とタイヤ剛性$D_\mathrm{s,local}$推定結果を融合した手法\cite{mizuguchi}などが提案されている。
@@ -113,7 +116,7 @@ EVは主にオンボードモータ車(On-Board Motor EV : OBM-EV)とインホ�
 本研究の$\mu-\lambda$曲線推定は，リアルタイム性の確保及び観測された部分的な情報から曲線全体を推定するため，機械学習を用い特定のタイヤモデルの関数やパラメータを前提とせずデータ駆動により行う。
 
 本論文の構成を以下に示す。第2章では実験車両・物理モデルについて述べる。第3章では駆動力制御及び提案手法である機械学習モデルを用いた$\mu-\lambda$曲線推定および$\lambda_\mathrm{peak}$推定法について述べる。
-第4章では提案手法の有効性を，実車測定データにおける駆動力の比較により示す。第5章で結論を述べる。
+第4章では実車測定データにより提案手法による$\lambda_\mathrm{peak}$推定の有効性を示す。第5章で結論を述べる。
 
 % 引用例：\cite{ReferenceKey}
 % 複数引用例：\cite{ReferenceKey1,ReferenceKey2}
@@ -216,8 +219,6 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \bicaption{駆動力制御(DFC)のブロック線図}{Block diagram of DFC}
 \label{fig:3_DFC_circuit}
 \end{figure}
-駆動力制御は，トラクション制御として用いられている\cite{yoshimura}。ブロック線図を図\ref{fig:3_DFC_circuit}に示す。
-図のとおりカスケード構造をとり，アウターループが駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力制御ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
 
 \begin{figure}[tb]
 \centering
@@ -227,12 +228,26 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \bicaption{駆動力オブザーバ(DFO)}{Driving Force Observer : DFO}
 \label{fig:3_DFO}
 \end{figure}
+
+\begin{figure*}[tb]
+\centering
+\includegraphics[width=0.8\textwidth]{fig/4_prop_flow_detail.pdf}
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\bicaption{提案手法の詳細なブロック線図}{Detailed block diagram of the proposal method}
+\label{fig:4_prop_flow_detail}
+\end{figure*}
+
+駆動力制御は，トラクション制御として用いられている\cite{yoshimura}。ブロック線図を図\ref{fig:3_DFC_circuit}に示す。
+図のとおりカスケード構造をとり，アウターループが駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力制御ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
+
 DFOのブロック線図を図\ref{fig:3_DFO}に示す。推定される駆動力$\hat{F}_{\mathrm{d},ij}$は式\ref{eq:2_F_d}を変形し，以下の式で表される。
 \begin{equation}
 \label{eq:3_DFO}
 \hat{F}_{\mathrm{d},ij} = Q_{\mathrm{f}}(s) \frac{ T^{*}_{ij} - J_{\omega,ij}\dot{\omega}_{ij} }{r}
 \end{equation}
 ここで用いている$Q_{\mathrm{f}}(s) = 1 / (\tau s + 1)$は時定数$\tau$の一次のローパスフィルタである。
+
 
 一方，スリップ率は式(\ref{eq:2_lambda})に示すように駆動時($r\omega_{ij} \ge V$)と制動時($r\omega_{ij} < V$)で定義が異なり，制御において不都合である。そこで，スリップ率の代わりに次式で定義される操作量$y_{ij}$を導入しスリップ率制御を行う。
 \begin{equation}
@@ -243,8 +258,10 @@ $y_\mathrm{ij}$は制動時のスリップ率に等しく，低スリップ領�
 
 このスリップ率リミッタの値を，図\ref{fig:2_mu-lambda_curve}に示すような$\mu$が最大となる（もしくは飽和する）最適スリップ率$\lambda_\mathrm{peak}$に設定することで，トラクション効果と駆動力最大化による運動性の向上を両立することができる。
 
+
 \subsection{提案$\lambda_\mathrm{peak}$推定手法の概要}
-本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートは図\ref{fig:prop_flow}に示したとおりである。
+
+本研究では，走行中に観測された($\lambda, \mu$)の情報から$\mu-\lambda$曲線全体の形状を推定し，推定曲線から$\lambda_\mathrm{peak}$を推定する。推定手法のフローチャートを図\ref{fig:4_prop_flow_detail}に示す。
 曲線の推定には，多層パーセプトロン(Multi-Layer Perceptron : MLP)を用い，逐次計測された$\mu, \lambda$からリアルタイムに$\mu-\lambda$曲線を出力する。
 
 
@@ -337,8 +354,17 @@ G_{\mu,k} = \frac{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out
 
 これにより，ピークが明確に存在しない場合でも$\mu$が飽和するスリップ率を最適スリップ率として推定できるほか，推定$\mu-\lambda$曲線に振動が残っていてもロバストなピーク点判定を行うことができる。
 
+\subsubsection{$\lambda_\mathrm{lim}$設定}
+逐次推定された$\hat{lambda}_\mathrm{peak}$は，素早く異なる値をとり，その結果低$\mu$路においてスリップ率指令値が振動的になる影響で車両運動がが不安定になる可能性がある。そのため，生の推定値$\hat{lambda}_\mathrm{peak}$に対しローパスフィルタをかけることでその振動を抑制する。
 
-\section{実験内容・結果}
+さらに，駆動力制御では前述の通りスリップ率$\lambda$ではなく制動時のスリップ率$y$を操作量として用いるため，$\lambda_\mathrm{lim}$を$y_\mathrm{lim}$に変換する必要がある。変換式を次式に示す。
+\begin{equation}
+\label{eq:3_y_lim}
+y_\mathrm{lim} = \frac{1}{1 - \lambda_\mathrm{lim}}
+\end{equation}
+
+
+\section{提案手法の検証}
 \subsection{実験車両}
 
 \begin{figure}[tb]
@@ -364,8 +390,19 @@ G_{\mu,k} = \frac{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out
 
 
 \subsection{検証条件}
-検証時の路面条件を図に示す。
-駆動力制御中に高$\mu$路から低$\mu$路に進入した際に空転リスクが上昇するような場面を想定し，
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.9\linewidth]{fig/4_road_condition.png}
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\bicaption{実験時の路面状況}{Experimental road condition}
+\label{fig:4_road_condition}
+\end{figure}
+想定場面は，図\ref{fig:4_road_condition}に示すような，高$\mu$路において駆動力制御により走行中に低$\mu$路に進入するような状況である。
+実車実験において，低$\mu$路はの再現には図に示すような低摩擦シートを利用した。
+停止状態から高$\mu$路において駆動力指令値$900$ Nで発進し，同時に$\lambda_\mathrm{peak}$推定を開始する。$\SI{10}{m}$走行後低摩擦シートに進入し，$\SI{20}{m}$間走行する。
+
+
 
 \subsection{シミュレーション結果}
 シミュレーション結果と考察を記述する。
