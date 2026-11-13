@@ -398,6 +398,26 @@ y_\mathrm{lim} = \frac{1}{1 - \lambda_\mathrm{lim}}
 \bicaption{実験時の路面状況}{Experimental road condition}
 \label{fig:4_road_condition}
 \end{figure}
+
+\begin{figure}[tb]
+\centering
+\captionsetup[bi-first]{name=図}
+\captionsetup[bi-second]{name=Fig.}
+\begin{subfigure}{0.47\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{fig/4_road_condition.png}
+  \bisubcaption{グラフ1の説明}{English description of graph 1}
+  \label{subfig:key-a}
+\end{subfigure}\hfill
+\begin{subfigure}{0.47\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{fig/4_lowmusheet.png}
+  \bisubcaption{グラフ2の説明}{English description of graph 2}
+  \label{subfig:key-b}
+\end{subfigure}
+\bicaption{図表タイトル}{Title.}
+\label{fig:key}
+\end{figure}
 想定場面は，図\ref{fig:4_road_condition}に示すような，高$\mu$路において駆動力制御により走行中に低$\mu$路に進入するような状況である。
 実車実験において，低$\mu$路はの再現には図に示すような低摩擦シートを利用した。
 停止状態から高$\mu$路において駆動力指令値$900$ Nで発進し，同時に$\lambda_\mathrm{peak}$推定を開始する。$\SI{10}{m}$走行後低摩擦シートに進入し，$\SI{20}{m}$間走行する。
