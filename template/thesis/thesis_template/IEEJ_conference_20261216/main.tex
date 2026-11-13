@@ -355,7 +355,7 @@ G_{\mu,k} = \frac{ \displaystyle \sum_{i\,:\,m_{i,k}=1} \tilde{\mu}_{\mathrm{out
 これにより，ピークが明確に存在しない場合でも$\mu$が飽和するスリップ率を最適スリップ率として推定できるほか，推定$\mu-\lambda$曲線に振動が残っていてもロバストなピーク点判定を行うことができる。
 
 \subsubsection{$\lambda_\mathrm{lim}$設定}
-逐次推定された$\hat{lambda}_\mathrm{peak}$は，素早く異なる値をとり，その結果低$\mu$路においてスリップ率指令値が振動的になる影響で車両運動がが不安定になる可能性がある。そのため，生の推定値$\hat{lambda}_\mathrm{peak}$に対しローパスフィルタをかけることでその振動を抑制する。
+逐次推定された$\hat{\lambda}_\mathrm{peak}$は，素早く異なる値をとり，その結果低$\mu$路においてスリップ率指令値が振動的になる影響で車両運動がが不安定になる可能性がある。そのため，生の推定値$\hat{\lambda}_\mathrm{peak}$に対しローパスフィルタをかけることでその振動を抑制する。
 
 さらに，駆動力制御では前述の通りスリップ率$\lambda$ではなく制動時のスリップ率$y$を操作量として用いるため，$\lambda_\mathrm{lim}$を$y_\mathrm{lim}$に変換する必要がある。変換式を次式に示す。
 \begin{equation}
@@ -390,45 +390,79 @@ y_\mathrm{lim} = \frac{1}{1 - \lambda_\mathrm{lim}}
 
 
 \subsection{検証条件}
-\begin{figure}[tb]
-\centering
-\includegraphics[width=0.9\linewidth]{fig/4_road_condition.png}
-\captionsetup[bi-first]{name=図}
-\captionsetup[bi-second]{name=Fig.}
-\bicaption{実験時の路面状況}{Experimental road condition}
-\label{fig:4_road_condition}
-\end{figure}
+% \begin{figure}[tb]
+% \centering
+% \includegraphics[width=0.9\linewidth]{fig/4_road_condition.png}
+% \captionsetup[bi-first]{name=図}
+% \captionsetup[bi-second]{name=Fig.}
+% \bicaption{実験時の路面状況}{Experimental road condition}
+% \label{fig:4_road_condition}
+% \end{figure}
 
 \begin{figure}[tb]
 \centering
 \captionsetup[bi-first]{name=図}
 \captionsetup[bi-second]{name=Fig.}
-\begin{subfigure}{0.47\linewidth}
+\begin{subfigure}{0.7\linewidth}
   \centering
   \includegraphics[width=\linewidth]{fig/4_road_condition.png}
-  \bisubcaption{グラフ1の説明}{English description of graph 1}
-  \label{subfig:key-a}
+  \bisubcaption{走行路面設定}{Experimental road surface setup}
+  \label{subfig:4_road_condition}
 \end{subfigure}\hfill
-\begin{subfigure}{0.47\linewidth}
+\begin{subfigure}{0.25\linewidth}
   \centering
   \includegraphics[width=\linewidth]{fig/4_lowmusheet.png}
-  \bisubcaption{グラフ2の説明}{English description of graph 2}
-  \label{subfig:key-b}
+  \bisubcaption{低$\mu$シート}{Low $\mu$ sheet}
+  \label{subfig:4_low_mu_sheet}
 \end{subfigure}
-\bicaption{図表タイトル}{Title.}
+\bicaption{実車実験の走行環境}{Experimental road condition}
 \label{fig:key}
 \end{figure}
-想定場面は，図\ref{fig:4_road_condition}に示すような，高$\mu$路において駆動力制御により走行中に低$\mu$路に進入するような状況である。
-実車実験において，低$\mu$路はの再現には図に示すような低摩擦シートを利用した。
-停止状態から高$\mu$路において駆動力指令値$900$ Nで発進し，同時に$\lambda_\mathrm{peak}$推定を開始する。$\SI{10}{m}$走行後低摩擦シートに進入し，$\SI{20}{m}$間走行する。
+想定場面は，図\ref{subfig:4_road_condition}に示すような，高$\mu$路において駆動力制御により走行中に低$\mu$路に進入するような状況である。
+実車実験において，低$\mu$路はの再現には図に示すような低$\mu$シートを利用した。このシートに水を撒くことで，$\mu_\mathrm{peak} = 0.25$程度の低$\mu$路を再現することができる。
 
+停止状態から高$\mu$路においてで発進し，同時に$\lambda_\mathrm{peak}$推定を開始する。$\SI{10}{m}$走行後低摩擦シートに進入し，$\SI{20}{m}$走行する。
+駆動力指令値は$900$ N で一定とし，これは高$\mu$路では発揮可能だが低$\mu$路では物理的に発揮できず空転するような値である。
 
+駆動力制御の車輪速制御極は$\omega_n = 20$ rad/s であり，アウターループの積分ゲインは$K_i  =0.1$とした。
+また，$\hat{\lambda}_\mathrm{peak}$にかけるLPFのカットオフ周波数は$\omega_c = 10$ rad/s とした。
 
-\subsection{シミュレーション結果}
-シミュレーション結果と考察を記述する。
 
 \subsection{実験結果}
-実験結果と考察を記述する。
+\begin{figure}[tb]
+  \centering
+  \captionsetup[bi-first]{name=図}
+  \captionsetup[bi-second]{name=Fig.}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data077.png}
+    \bisubcaption{提案手法}{Proposal method}
+    \label{subfig:4_result_lambda_prop}
+  \end{subfigure}\hfill
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data053.png}
+    \bisubcaption{従来手法}{Conventional method}
+    \label{subfig:4_result_lambda_old}
+  \end{subfigure}
+  \bicaption{提案手法と従来手法の比較}{Comparison of proposed and conventional methods}
+  \label{fig:4_result_lambda}
+  \end{figure}
+
+走行実験は提案手法のほかに，従来手法としてスリップ率リミッタを$\lambda_\mathrm{lim} = 0.2$に固定した場合の2通りを行った。
+両手法におけるスリップ率リミッタおよび測定されたスリップ率の時系列データを図\ref{fig:4_result_lambda}に示す。ただし，路面変化時を0秒とし路面変化前2秒から変化後4秒までを示している。
+図より，従来手法では路面変化後に固定リミッタに張り付き高スリップ状態となっているが，提案手法では路面変化後も高スリップ状態にならず，低スリップ領域に維持することができている。
+
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=0.9\linewidth]{fig/4_result_mu_lambda.pdf}
+  \captionsetup[bi-first]{name=図}
+  \captionsetup[bi-second]{name=Fig.}
+  \bicaption{測定$\mu-\lambda$プロット}{Measured $\mu-\lambda$ plot}
+  \label{fig:4_result_mu_lambda}
+\end{figure}
+また，提案手法における
+
 
 \section{結論}
 本稿で得られた成果をまとめ，今後の課題を記述する。
