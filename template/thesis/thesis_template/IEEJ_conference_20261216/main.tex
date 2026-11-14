@@ -425,7 +425,6 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 駆動力制御の車輪速制御極は$\omega_\mathrm{n} = -20$ rad/s であり，アウターループの積分ゲインは$K_\mathrm{i}  =0.1$とした。
 また，$\hat{\lambda}_\mathrm{peak}$にかけるLPFのカットオフ周波数は$\omega_c = 10$ rad/s とした。
 
-
 \subsection{実験結果}
 \begin{figure}[tb]
   \centering
@@ -433,16 +432,22 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
   \captionsetup[bi-second]{name=Fig.}
   \begin{subfigure}{\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data077.png}
-    \bisubcaption{提案手法}{Proposed method}
-    \label{subfig:4_result_lambda_prop}
-  \end{subfigure}\hfill
-  \begin{subfigure}{\linewidth}
-    \centering
     \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data053.png}
     \bisubcaption{従来手法}{Conventional method}
     \label{subfig:4_result_lambda_old}
   \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data077.png}
+    \bisubcaption{提案手法}{Proposed method}
+    \label{subfig:4_result_lambda_prop}
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data077_zoom.png}
+    \bisubcaption{提案手法拡大図}{Zoom of proposed method}
+    \label{subfig:4_result_lambda_prop_zoom}
+  \end{subfigure}\hfill
   \bicaption{提案手法と従来手法の比較}{Comparison of proposed and conventional methods}
   \label{fig:4_result_lambda}
   \end{figure}

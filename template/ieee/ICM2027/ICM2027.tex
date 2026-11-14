@@ -338,7 +338,7 @@ Through the above procedures, the $\mu$--$\lambda$ curve can be estimated online
     \label{fig:3_estimate_peak}
 \end{figure}
 
-The optimal slip ratio is estimated from the reconstructed $\mu$--$\lambda$ curve. The flowchart of the estimation algorithm is shown in Fig.~\ref{fig:3_estimate_peak}.
+The optimal slip ratio is estimated from the estimated $\mu$--$\lambda$ curve. The flowchart of the algorithm is shown in Fig.~\ref{fig:3_estimate_peak}.
 
 First, the local gradient of the estimated $\mu$--$\lambda$ curve is calculated as
 \begin{equation}
@@ -423,17 +423,25 @@ Furthermore, the cutoff frequency of the low-pass filter (LPF) applied to $\hat{
 \subsection{Experimental Results}
 \begin{figure}[tb]
     \centering
-    \subfloat[Proposed method]{
+        \subfloat[Conventional method.]{
+        \includegraphics[width=0.8\linewidth]{fig/SlipRatioComparison_Data053.png}
+        \label{subfig:4_result_lambda_old}
+    }
+    
+    \vspace{2mm}
+
+    \subfloat[Proposed method.]{
         \includegraphics[width=0.8\linewidth]{fig/SlipRatioComparison_Data077.png}
         \label{subfig:4_result_lambda_prop}
     }
 
     \vspace{2mm}
 
-    \subfloat[Conventional method]{
-        \includegraphics[width=0.8\linewidth]{fig/SlipRatioComparison_Data053.png}
-        \label{subfig:4_result_lambda_old}
+    \subfloat[Zoom of proposed method.]{
+        \includegraphics[width=0.8\linewidth]{fig/SlipRatioComparison_Data077_zoom.png}
+        \label{subfig:4_result_lambda_prop_zoom}
     }
+
 
     \caption{Comparison of the proposed and conventional methods.}
     \label{fig:4_result_lambda}
