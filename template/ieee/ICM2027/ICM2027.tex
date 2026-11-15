@@ -186,7 +186,7 @@ These coefficients do not directly correspond to physical parameters but are det
 Driving Force Control (DFC) is widely used as a traction control method for electric vehicles \cite{yoshimura}. The block diagram of the DFC system is shown in Fig.~\ref{fig:3_DFC_circuit}.
 \begin{figure}[tb]
     \centering
-    \includegraphics[width=\linewidth]{fig/3_DFC_circuit.pdf}
+    \includegraphics[width=0.9\linewidth]{fig/3_DFC_circuit.pdf}
     \caption{Block diagram of DFC.}
     \label{fig:3_DFC_circuit}
 \end{figure}
@@ -415,7 +415,7 @@ Furthermore, the cutoff frequency of the low-pass filter (LPF) applied to $\hat{
         \includegraphics[width=0.8\linewidth]{fig/SlipRatioComparison_Data053.png}
         \label{subfig:4_result_lambda_old}
     }
-    
+
     \vspace{2mm}
 
     \subfloat[Proposed method.]{
@@ -440,7 +440,6 @@ The time axis is set such that the road surface transition occurs at 0 s, and th
 
 As shown in the figure, with the conventional method, the slip ratio remains at the fixed limiter value after the transition to the low-$\mu$ road surface, resulting in a high-slip condition.
 In contrast, the proposed method prevents the slip ratio from reaching such a high value after the transition and maintains it within a low-slip region.
-
 \begin{figure}[tb]
   \centering
   \includegraphics[width=0.7\linewidth]{fig/4_result_mu_lambda.pdf}
