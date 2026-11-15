@@ -386,6 +386,7 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 実験車両として著者らの研究グループが製作した4輪IWM-EV「FPEV-2 Kanon」を図\ref{subfig:2_Kanon}に示す。
 搭載されているIWMを図\ref{subfig:2_IWM}に示す。
 
+
 \subsection{検証条件}
 % \begin{figure}[tb]
 % \centering
@@ -421,7 +422,6 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 停止状態から高$\mu$路で発進し，同時に$\lambda_\mathrm{peak}$推定を開始する。$\SI{10}{m}$走行後低摩擦シートに進入し，$\SI{20}{m}$走行する。
 駆動力指令値は$900$ N で一定とし，これは高$\mu$路では発揮可能だが低$\mu$路では物理的に発揮できず空転するような値である。
 
-駆動輪は後右(RR)輪の1輪であり，後左(RL)輪から車体速度$V$を計測した。
 駆動力制御の車輪速制御極は$\omega_\mathrm{n} = -20$ rad/s であり，アウターループの積分ゲインは$K_\mathrm{i}  =0.1$とした。
 また，$\hat{\lambda}_\mathrm{peak}$にかけるLPFのカットオフ周波数は$\omega_c = 10$ rad/s とした。
 
@@ -430,19 +430,19 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
   \centering
   \captionsetup[bi-first]{name=図}
   \captionsetup[bi-second]{name=Fig.}
-  \begin{subfigure}{0.9\linewidth}
+  \begin{subfigure}{\linewidth}
     \centering
     \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data053.png}
     \bisubcaption{従来手法}{Conventional method}
     \label{subfig:4_result_lambda_old}
   \end{subfigure}
-  \begin{subfigure}{0.9\linewidth}
+  \begin{subfigure}{\linewidth}
     \centering
     \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data077.png}
     \bisubcaption{提案手法}{Proposed method}
     \label{subfig:4_result_lambda_prop}
   \end{subfigure}
-  \begin{subfigure}{0.9\linewidth}
+  \begin{subfigure}{\linewidth}
     \centering
     \includegraphics[width=\linewidth]{fig/SlipRatioComparison_Data077_zoom.png}
     \bisubcaption{提案手法拡大図}{Zoom of proposed method}

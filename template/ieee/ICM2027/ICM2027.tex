@@ -346,7 +346,7 @@ Next, among all consecutive sets of 50 grids, the set with the smallest slip rat
 
 If no such set exists, the threshold is relaxed to $\hat{D}_{\mathrm{s,local},i}<0.05$, followed by the same search process. If no valid set is found, the threshold is further relaxed to $\hat{D}_{\mathrm{s,local},i}<0.10$. If a valid set still cannot be found, the estimation is terminated and $\hat{\lambda}_{\mathrm{peak}}=0.30$ is assigned.
 
-This procedure enables estimation of the slip ratio corresponding to friction saturation even when the $\mu$--$\lambda$ curve does not exhibit a distinct peak. In addition, robust peak detection can be achieved even when residual oscillations remain in the estimated curve.
+This procedure enables estimation of the slip ratio corresponding to friction saturation even when the $\mu$--$\lambda$ curve does not exhibit a distinct peak. In addition, peak detection remains robust despite residual oscillations in the estimated curve.
 
 \subsubsection{Setting of $\lambda_{\mathrm{lim}}$}
 The estimated $\hat{\lambda}_{\mathrm{peak}}$ may change rapidly, causing the slip-ratio command to fluctuate and possibly making the vehicle unstable on low-friction surfaces. Therefore, a low-pass filter is used to reduce these fluctuations.
@@ -377,7 +377,7 @@ y_{\mathrm{lim}}
     \label{fig:2_Kanon_IWM}
 \end{figure}
 The four-wheel in-wheel-motor electric vehicle (IWM-EV), FPEV-2 Kanon, developed by the authors' research group, was used as the experimental vehicle, as shown in Fig.~\ref{subfig:2_Kanon}.
-The in-wheel motor (IWM) installed in the vehicle is shown in Fig.~\ref{subfig:2_IWM}.
+The vehicle's in-wheel motor (IWM) is shown in Fig.~\ref{subfig:2_IWM}.
 
 
 \subsection{Experimental Conditions}
@@ -404,6 +404,7 @@ After traveling $\SI{10}{m}$, the vehicle enters the low-friction sheet and trav
 The driving force command is maintained at a constant value of $900$ N.
 This value can be achieved on the high-$\mu$ road surface but exceeds the physically attainable driving force on the low-$\mu$ road surface, thereby causing wheel slip.
 
+The right-rear (RR) wheel was used as the driving wheel, while the vehicle speed \(V\) was measured using the left-rear (RL) wheel.
 The pole of the wheel-speed control system for driving force control was set to $\omega_\mathrm{n} = -20$ rad/s, and the integral gain of the outer loop was set to $K_\mathrm{i} = 0.1$.
 Furthermore, the cutoff frequency of the low-pass filter (LPF) applied to $\hat{\lambda}_\mathrm{peak}$ was set to $\omega_c = 10$ rad/s.
 
