@@ -190,19 +190,21 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 \subsection{タイヤ-路面モデル}
 図\ref{fig:2_mu-lambda_curve}に示すとおり，$\mu$--$\lambda$曲線は非線形な形状を持つ。これに対し，実験的に関数としてフィッティングしたMagic Fomula\cite{pacejka}というモデルが存在する。その式を以下に示す。
 \begin{equation}
-    \label{eq:2_magicformula}
-    \mu_{ij}
-    =
-    D\sin\left(
-    C\arctan(B\lambda_{ij})
-    -
-    E\left(
-    B\lambda_{ij}
-    -
-    \arctan(B\lambda_{ij})
-    \right)
-    \right)
-\end{equation}
+  \label{eq:2_magicformula}
+  \mu_{ij}
+  =
+  D\sin\left[
+  C\arctan\left\{
+  B\lambda_{ij}
+  -
+  E\left(
+  B\lambda_{ij}
+  -
+  \arctan(B\lambda_{ij})
+  \right)
+  \right\}
+  \right]
+  \end{equation}
 ここで，$B$はStiffness factor，$C$はShape factor，$D$はPeak factor，$E$はCurvature factorと呼ばれる係数であり，この4つの係数により$\mu$--$\lambda$曲線をフィッティングしている. 
 これらは直接的な物理パラメータではなく，実験データへのフィッティングによって決定される係数である。
 このモデルは$\mu$--$\lambda$曲線の非線形性を高精度に表現できるため，標準的なタイヤモデルとして広く用いられている。
@@ -369,13 +371,13 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 \centering
 \begin{subfigure}{0.55\linewidth}
   \centering
-  \includegraphics[height=2.7cm]{fig/2_Kanon.pdf}
+  \includegraphics[height=2.3cm]{fig/2_Kanon.pdf}
   \bisubcaption{FPEV-2 Kanon}{FPEV-2 Kanon}
   \label{subfig:2_Kanon}
 \end{subfigure}\hfill
 \begin{subfigure}{0.4\linewidth}
   \centering
-  \includegraphics[height=2.7cm]{fig/2_Kanon_rear_IWM.pdf}
+  \includegraphics[height=2.3cm]{fig/2_Kanon_rear_IWM.pdf}
   \bisubcaption{インホイールモータ}{In-wheel motor}
   \label{subfig:2_IWM}
 \end{subfigure}
@@ -385,7 +387,6 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 \end{figure}
 実験車両として著者らの研究グループが製作した4輪IWM-EV「FPEV-2 Kanon」を図\ref{subfig:2_Kanon}に示す。
 搭載されているIWMを図\ref{subfig:2_IWM}に示す。
-
 
 \subsection{検証条件}
 % \begin{figure}[tb]
@@ -401,16 +402,16 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 \centering
 \captionsetup[bi-first]{name=図}
 \captionsetup[bi-second]{name=Fig.}
-\begin{subfigure}{0.7\linewidth}
+\begin{subfigure}{0.65\linewidth}
   \centering
   \includegraphics[width=\linewidth]{fig/4_road_condition.png}
   \bisubcaption{走行路面設定}{Experimental road surface setup}
   \label{subfig:4_road_condition}
 \end{subfigure}\hfill
-\begin{subfigure}{0.25\linewidth}
+\begin{subfigure}{0.3\linewidth}
   \centering
   \includegraphics[width=\linewidth]{fig/4_lowmusheet.png}
-  \bisubcaption{非粘着複合シート}{Non-adhesive composite sheet}
+  \bisubcaption{非粘着シート}{Non-adhesive composite sheet}
   \label{subfig:4_low_mu_sheet}
 \end{subfigure}
 \bicaption{実車実験の走行環境}{Experimental road condition}

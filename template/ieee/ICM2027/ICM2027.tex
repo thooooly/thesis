@@ -164,18 +164,20 @@ where $a_x$ is the longitudinal acceleration, $l_\mathrm{f}$ and $l_\mathrm{r}$ 
 \subsection{Tire-Road Model}
 As shown in Fig.~\ref{fig:2_mu-lambda_curve}, the $\mu$--$\lambda$ curve exhibits highly nonlinear characteristics. One of the most widely used models for representing this relationship is the Magic Formula tire model \cite{pacejka}, which is expressed as
 \begin{equation}
-\label{eq:2_magicformula}
-\mu_{ij}
-=
-D\sin\left(
-C\arctan(B\lambda_{ij})
--
-E\left(
-B\lambda_{ij}
--
-\arctan(B\lambda_{ij})
-\right)
-\right)
+    \label{eq:2_magicformula}
+    \mu_{ij}
+    =
+    D\sin\left[
+    C\arctan\left\{
+    B\lambda_{ij}
+    -
+    E\left(
+    B\lambda_{ij}
+    -
+    \arctan(B\lambda_{ij})
+    \right)
+    \right\}
+    \right]
 \end{equation}
 where $B$, $C$, $D$, and $E$ denote the stiffness factor, shape factor, peak factor, and curvature factor, respectively. The $\mu$--$\lambda$ curve is fitted using these four coefficients.
 
