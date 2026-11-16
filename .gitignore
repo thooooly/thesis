@@ -12,7 +12,17 @@
 *.out
 *.synctex
 *.toc
-*.pdf
+
+### TeXで生成されるPDFのみ除外
+template/ieee/ICM2027/ICM2027.pdf
+template/ieee/ICM2027/ICM2027_horikoshi.pdf
+template/thesis/thesis_template/IEEJ_conference_20261216/main.pdf
+template/thesis/thesis_template/IEEJ_conference_20261216/電気学会研究会_horikoshi.pdf
+template/thesis/thesis_template/template_1/main/thesis.pdf
+template/thesis/thesis_template/template_2/main/thesis.pdf
+template/thesis/thesis_template/template_5/main/thesis.pdf
+template/thesis/thesis_template/template_IEEJ_conference/main.pdf
+template/thesis/thesis_template/template_graduation_thesis/thesis.pdf
 
 ### Mac
 .DS_Store
