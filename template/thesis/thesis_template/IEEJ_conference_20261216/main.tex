@@ -25,7 +25,11 @@
 % Paper information
 % ============================================================
 % 論文番号（1頁目右上）
-\articlenumber{IIC-XX-XXX}
+\articlenumber{\shortstack{
+SPC-26-216\\
+HCA-26-067\\
+VT-26-058
+}}
 
 % タイトル
 \jtitle{EVの駆動力制御のための\\機械学習を用いた$\mu$--$\lambda$曲線推定を伴う最適スリップ率推定の基礎検討}
@@ -191,20 +195,23 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 図\ref{fig:2_mu-lambda_curve}に示すとおり，$\mu$--$\lambda$曲線は非線形な形状を持つ。これに対し，実験的に関数としてフィッティングしたMagic Fomula\cite{pacejka}というモデルが存在する。その式を以下に示す。
 \begin{equation}
   \label{eq:2_magicformula}
+  \begin{aligned}
   \mu_{ij}
-  =
+  ={}&
   D\sin\left[
   C\arctan\left\{
   B\lambda_{ij}
-  -
-  E\left(
+  \right.\right.\\
+  &\left.\left.
+  -E\left(
   B\lambda_{ij}
   -
   \arctan(B\lambda_{ij})
   \right)
   \right\}
   \right]
-  \end{equation}
+  \end{aligned}
+\end{equation}
 ここで，$B$はStiffness factor，$C$はShape factor，$D$はPeak factor，$E$はCurvature factorと呼ばれる係数であり，この4つの係数により$\mu$--$\lambda$曲線をフィッティングしている. 
 これらは直接的な物理パラメータではなく，実験データへのフィッティングによって決定される係数である。
 このモデルは$\mu$--$\lambda$曲線の非線形性を高精度に表現できるため，標準的なタイヤモデルとして広く用いられている。
