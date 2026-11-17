@@ -72,7 +72,7 @@ VT-26-058
 \end{jkeyword}
 
 \begin{ekeyword}
-electric vehicle, in-wheel motor, tire model estimation, slip ratio driving force control, neural network
+electric vehicle, in-wheel motor, tire model estimation, slip ratio, driving force control, neural network
 \end{ekeyword}
 
 \begin{abstract}
@@ -248,7 +248,7 @@ $\mu_{ij}$は，図\ref{fig:2_mu-lambda_curve}に示すように$\lambda_{ij}$�
 駆動力制御は，トラクション制御として用いられている\cite{yoshimura}。ブロック線図を図\ref{fig:3_DFC_circuit}に示す。
 図のとおりカスケード構造をとり，アウターループが駆動力オブザーバ(Driving Force Observer : DFO)に基づく駆動力制御ループとなっており，インナーループにスリップ率制御として車輪速制御ループが存在する。
 
-DFOのブロック線図を図\ref{fig:3_DFO}に示す。推定される駆動力$\hat{F}_{\mathrm{d},ij}$は式\ref{eq:2_F_d}を変形し，以下の式で表される。
+DFOのブロック線図を図\ref{fig:3_DFO}に示す。推定される駆動力$\hat{F}_{\mathrm{d},ij}$は式\ref{eq:2_wheel_eq}を変形し，以下の式で表される。
 \begin{equation}
 \label{eq:3_DFO}
 \hat{F}_{\mathrm{d},ij} = Q_{\mathrm{f}}(s) \frac{ T^{*}_{ij} - J_{\omega,ij}\dot{\omega}_{ij} }{r}
@@ -428,7 +428,8 @@ y_\mathrm{lim} = \frac{\lambda_\mathrm{lim}}{1 - \lambda_\mathrm{lim}}
 実車実験において，低$\mu$路の再現には図に示すような非粘着複合シートを利用した。このシートに水を撒くことで，$\mu_\mathrm{peak} = 0.25$程度の低$\mu$路を再現することができる。
 
 停止状態から高$\mu$路で発進し，同時に$\lambda_\mathrm{peak}$推定を開始する。$\SI{10}{m}$走行後低摩擦シートに進入し，$\SI{20}{m}$走行する。
-駆動力指令値は$900$ N で一定とし，これは高$\mu$路では発揮可能だが低$\mu$路では物理的に発揮できず空転するような値である。
+駆動輪は右後(RR)輪1輪とし，従動輪のうち左後(RL)輪の車輪速度$V_\omega$を車体速度$V$とした。
+車両質量$\SI{850}{kg}$に対し駆動力指令値は1輪あたり$900$ N で一定とし，これは高$\mu$路では発揮可能だが低$\mu$路では物理的に発揮できず空転するような値である。
 
 駆動力制御の車輪速制御極は$\omega_\mathrm{n} = -20$ rad/s であり，アウターループの積分ゲインは$K_\mathrm{i}  =0.1$とした。
 また，$\hat{\lambda}_\mathrm{peak}$にかけるLPFのカットオフ周波数は$\omega_c = 10$ rad/s とした。
