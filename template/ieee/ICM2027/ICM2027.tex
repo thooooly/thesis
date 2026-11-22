@@ -385,7 +385,7 @@ By spraying water onto the sheet, a low-friction surface with a peak friction co
     \centering
     \begin{minipage}[c]{0.5\columnwidth}
         \centering
-        \includegraphics[width=\linewidth]{fig/toyodenki_magicformula.png}
+        \includegraphics[width=\linewidth]{fig/optimized/toyodenki_magicformula.png}
         \captionof{figure}{Test bench road surfaces.}
         \label{fig:4_testbench_road_conditions}
     \end{minipage}
@@ -465,19 +465,19 @@ The average acceleration time obtained using the proposed method was used as the
 \begin{figure}[tb]
     \centering
     \subfloat[Conventional method ($\lambda_\mathrm{lim} = 0.20$).\label{subfig:4_result_lambda_old}]{
-        \includegraphics[width=0.9\linewidth]{fig/SlipRatioComparison_Data053.png}
+        \includegraphics[width=0.9\linewidth]{fig/optimized/SlipRatioComparison_Data053.png}
     }
 
 
 
     \subfloat[Proposed method.\label{subfig:4_result_lambda_prop}]{
-        \includegraphics[width=0.9\linewidth]{fig/SlipRatioComparison_Data077.png}
+        \includegraphics[width=0.9\linewidth]{fig/optimized/SlipRatioComparison_Data077.png}
     }
 
   
 
     \subfloat[Zoom of proposed method.\label{subfig:4_result_lambda_prop_zoom}]{
-        \includegraphics[width=0.9\linewidth]{fig/SlipRatioComparison_Data077_zoom.png}
+        \includegraphics[width=0.9\linewidth]{fig/optimized/SlipRatioComparison_Data077_zoom.png}
     }
 
 \caption{Comparison of the proposed and conventional methods, showing that $\hat{\lambda}_\mathrm{peak}$ and $\lambda_\mathrm{lim}$ are close to the peak of the reference fitted $\mu$--$\lambda$ curve~\cite{mizuguchi2026}.}
@@ -498,11 +498,11 @@ For comparison, the Magic Formula parameters identified for an actual road surfa
 \begin{figure}[tb]
     \centering
     \subfloat[Estimated $\mu$--$\lambda$ curve.\label{subfig:4_testbench_lambda}]{
-        \includegraphics[width=0.45\linewidth]{fig/MLP_finalcurve_RR_data325_road1_t2p640s.png}
+        \includegraphics[width=0.45\linewidth]{fig/optimized/MLP_finalcurve_RR_data325_road1_t2p640s.png}
     }
     \hfill
     \subfloat[Time response of slip ratio.\label{subfig:4_testbench_curve}]{
-        \includegraphics[width=0.49\linewidth]{fig/DFC_slip_ratio_RR_344.png}
+        \includegraphics[width=0.49\linewidth]{fig/optimized/DFC_slip_ratio_RR_344.png}
     }
     \caption{Estimated $\mu$--$\lambda$ curve close to the ground truth and convergence of the slip-ratio limiter near the reference peak on Road 1.}
     \label{fig:4_testbench_result}
@@ -553,11 +553,11 @@ These results demonstrate that, following the road change, $\lambda_{\mathrm{lim
 \begin{figure}[tb]
     \centering
     \subfloat[Individual runs.\label{subfig:4_acceleration_individual}]{
-        \includegraphics[width=0.47\linewidth]{fig/AccelerationTime_IndividualRuns_Road3.png}
+        \includegraphics[width=0.47\linewidth]{fig/optimized/AccelerationTime_IndividualRuns_Road3.png}
     }
     \hfill
     \subfloat[Mean and standard deviation.\label{subfig:4_acceleration_mean}]{
-        \includegraphics[width=0.47\linewidth]{fig/AccelerationTime_MeanSD_Road3.png}
+        \includegraphics[width=0.47\linewidth]{fig/optimized/AccelerationTime_MeanSD_Road3.png}
     }
     \caption{Comparison of acceleration times for different $\lambda_\mathrm{lim}$ on Road 3.}
     \label{fig:4_acceleration_road3}
